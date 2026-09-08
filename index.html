@@ -1,162 +1,4274 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="static/css/ofline.css">
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-      a{
-        text-decoration: none;
-        color:white;
-        
-      }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>32 Card Game - Smart AI</title>
+
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:radial-gradient(circle,#159451,#04351f);
+    color:#fff;
+    font-family:Arial,sans-serif;
+}
+
+.app{
+    max-width:1100px;
+    margin:auto;
+    padding-bottom:30px;
+}
+
+.top{
+    padding:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.title{
+    font-size:21px;
+    font-weight:900;
+}
+
+.menuWrap{
+    position:relative;
+}
+
+.menuBtn{
+    width:42px;
+    height:40px;
+    border:0;
+    border-radius:9px;
+    background:#fff;
+    color:#111;
+    font-size:25px;
+    font-weight:bold;
+}
+
+.menu{
+    position:absolute;
+    right:0;
+    top:46px;
+    width:190px;
+    background:#fff;
+    color:#111;
+    border-radius:12px;
+    padding:6px;
+    box-shadow:0 8px 25px rgba(0,0,0,.45);
+    z-index:1000;
+    display:none;
+}
+
+.menu.show{
+    display:block;
+}
+
+.menu button{
+    width:100%;
+    border:0;
+    background:transparent;
+    padding:11px;
+    text-align:left;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.menu button:hover{
+    background:#eee;
+}
+
+.info{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:7px;
+    padding:0 10px 8px;
+}
+
+.infoBox{
+    background:rgba(0,0,0,.30);
+    border-radius:10px;
+    text-align:center;
+    padding:7px;
+}
+
+.infoBox small{
+    display:block;
+    font-size:10px;
+    opacity:.7;
+}
+
+.infoBox strong{
+    font-size:15px;
+}
+
+.teams{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    padding:0 10px 8px;
+}
+
+.team{
+    background:rgba(0,0,0,.25);
+    border:2px solid transparent;
+    border-radius:10px;
+    padding:7px;
+    text-align:center;
+}
+
+.team.active{
+    border-color:#ffd43b;
+}
+
+.teamScore{
+    font-size:25px;
+    font-weight:900;
+}
+
+.teamBid{
+    font-size:11px;
+    opacity:.8;
+}
+
+.tableBox{
+    padding:8px;
+}
+
+.table{
+    height:480px;
+    position:relative;
+    background:radial-gradient(circle,#1eaa60,#08723d 70%);
+    border:8px solid #70420d;
+    border-radius:65px;
+    box-shadow:
+        inset 0 0 45px rgba(0,0,0,.35),
+        0 10px 30px rgba(0,0,0,.35);
+}
+
+.seat{
+    position:absolute;
+    min-width:100px;
+    text-align:center;
+    z-index:4;
+}
+
+.name{
+    font-size:14px;
+    font-weight:900;
+}
+
+.seatInfo{
+    font-size:11px;
+    opacity:.8;
+}
+
+.thinking{
+    color:#ffd43b;
+    font-size:10px;
+}
+
+.activeSeat .name{
+    color:#ffd43b;
+}
+
+.p1{
+    bottom:8px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.p2{
+    left:7px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.p3{
+    top:8px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.p4{
+    right:7px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.center{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:145px;
+    height:145px;
+    border:2px dashed rgba(255,255,255,.2);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-weight:bold;
+    font-size:12px;
+}
+
+.trick{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    display:grid;
+    grid-template-columns:60px 60px;
+    gap:8px;
+    z-index:10;
+}
+
+.played{
+    width:60px;
+    height:84px;
+    background:#fff;
+    color:#111;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+    font-weight:900;
+    box-shadow:0 4px 12px rgba(0,0,0,.45);
+}
+
+.red{
+    color:#d00000;
+}
+
+.joker{
+    color:#6417a5;
+}
+
+.status{
+    text-align:center;
+    background:rgba(0,0,0,.3);
+    padding:11px;
+    font-weight:900;
+}
+
+.panel{
+    margin:10px;
+    padding:12px;
+    background:rgba(0,0,0,.3);
+    border-radius:12px;
+}
+
+.panelTitle{
+    font-weight:900;
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.buttons button{
+    border:0;
+    border-radius:9px;
+    padding:9px 16px;
+    font-weight:900;
+}
+
+.colorButton{
+    font-size:23px;
+    min-width:65px;
+}
+
+.handTitle{
+    display:flex;
+    justify-content:space-between;
+    padding:5px 12px;
+    font-weight:bold;
+}
+
+.hand{
+    min-height:100px;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:6px;
+    padding:10px;
+}
+
+.card{
+    width:58px;
+    height:84px;
+    background:#fff;
+    color:#111;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+    font-weight:900;
+    box-shadow:0 4px 10px rgba(0,0,0,.4);
+    transition:.15s;
+}
+
+.card.legal{
+    cursor:pointer;
+    box-shadow:
+        0 0 0 2px #ffd43b,
+        0 5px 12px rgba(0,0,0,.4);
+}
+
+.card.legal:hover{
+    transform:translateY(-8px);
+}
+
+.card.illegal{
+    opacity:.3;
+}
+
+.revealBox{
+    background:#4b2200;
+    border:2px solid #ffb000;
+    border-radius:10px;
+    padding:10px;
+}
+
+.aiCards{
+    display:none;
+}
+
+.aiCards.show{
+    display:block;
+}
+
+.aiRow{
+    background:rgba(0,0,0,.25);
+    border-radius:8px;
+    padding:7px;
+    margin-bottom:5px;
+    font-size:13px;
+}
+
+.history{
+    max-height:260px;
+    overflow:auto;
+    font-size:12px;
+}
+
+.history div{
+    padding:5px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.scorePositive{
+    color:#72ff91;
+}
+
+.scoreNegative{
+    color:#ff7070;
+}
+
+@media(max-width:600px){
+
+    .table{
+        height:390px;
+        border-width:6px;
+        border-radius:45px;
+    }
+
+    .seat{
+        min-width:70px;
+    }
+
+    .name{
+        font-size:10px;
+    }
+
+    .card{
+        width:48px;
+        height:72px;
+        font-size:17px;
+    }
+
+    .played{
+        width:50px;
+        height:72px;
+        font-size:17px;
+    }
+
+    .trick{
+        grid-template-columns:50px 50px;
+    }
+
+    .title{
+        font-size:16px;
+    }
+
+    .infoBox small{
+        font-size:8px;
+    }
+
+    .infoBox strong{
+        font-size:12px;
+    }
+
+}
+
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <div class="row mt-4 p-3"><!--Header section start or 1st row start -->
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="#">E-shoipingps402</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <ul class="navbar-nav mr-auto">
-                      <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only"></span></a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Log out</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Register</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Log in </a>
-                      </li>
-                    </li>
-                  </div>  
-                <form class="d-flex">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-              </div>
-            </div>
-          </nav>
-            
-        </div><!--Header section end or 1st row end -->
+
+<div class="app">
+
+<div class="top">
+
+    <div class="title">
+        🃏 32 CARD GAME
     </div>
 
-    <div class="row mt-4 p-3"><!--Main section start or 2nd row start -->
-        <div class="col-md-3 bg-secondary text-white"><!-- side bar start -->
-          <h5>Filter by category</h5><hr>
-          <a href="#">All</a><br>
-          <a href="#">Mobile</a><br>
-          <a href="#">Shoes</a><br>
-          <a href="#">Cloth</a><br><br>
+    <div class="menuWrap">
 
-          <h5>Filter by price</h5><hr>
-          <form action="#" method="get">
-            <div class="mb1">
-              <label for="input2">min</label>
-              <input type="number" class="form-control" id="input2">
-            </div>
-            <div class="mb-1">
-              <label for="input2">max</label>
-              <input type="number" class="form-control" id="input2">
-            </div>
+        <button
+            class="menuBtn"
+            onclick="toggleMenu()">
+            ⋮
+        </button>
 
-            <button class="btn btn-danger">Find</button>
-          </form>
+        <div
+            id="menu"
+            class="menu">
 
-          <h5>short by price</h5>
-          <a href="#">Height to low</a><br>
-          <a href="#">Low to hight</a>
+            <button onclick="toggleAICards();closeMenu()">
+                👁️ AI Cards
+            </button>
+
+            <button onclick="newGame();closeMenu()">
+                🔄 New Game
+            </button>
+
+            <button onclick="resetScore();closeMenu()">
+                🗑️ Reset Score
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 
-        </div><!-- side bar end -->
-        <div class="col-md-9"><!-- product list section start -->
-          <div class="row">
-            <div class="col-md-3">
-              <div class="card" style="width: 100%;">
-                <img src="https://sp.yimg.com/ib/th?id=OPAC.6Iv9P9nGf3zCrA474C474&o=5&pid=21.1&w=&h=" class="card-img-top" alt="shoes">
-                <div class="card-body">
-                  <h5 class="card-title">Shoes</h5>
-                  <p class="card-text"><b>price:</b><i class="bi bi-currency-rupee"></i>2000</p>
-                  <a href="product_detail.html" class="btn btn-primary">See Detail</a>
-                </div>
-              </div>
-            </div><!--product 1-->
-            <div class="col-md-3">
-              <div class="card" style="width: 100%;">
-                <img src="https://sp.yimg.com/ib/th?id=OPAC.0mH%2fbvSwGWQJRw474C474&o=5&pid=21.1&w=&h=" class="card-img-top" alt="shoes">
-                <div class="card-body">
-                  <h5 class="card-title">Shoes</h5>
-                  <p class="card-text"><b>price:</b><i class="bi bi-currency-rupee"></i>5000</p>
-                  <a href="product_detail.html" class="btn btn-primary">See Detail</a>
-                </div>
-              </div>
-            </div><!--product 2-->
-            <div class="col-md-3">
-              <div class="card" style="width: 100%;">
-                <img src="https://sp.yimg.com/ib/th?id=OPAC.iICvrLSE7Bf6cg474C474&o=5&pid=21.1&w=&h=" class="card-img-top" alt="shoes">
-                <div class="card-body">
-                  <h5 class="card-title">Shoes</h5>
-                  <p class="card-text"><b>price:</b><i class="bi bi-currency-rupee"></i>3000</p>
-                  <a href="product_detail.html" class="btn btn-primary">See Detail</a>
-                </div>
-              </div>
-            </div><!--product 3-->
-            <div class="col-md-3">
-              <div class="card" style="width: 100%;">
-                <img src="https://sp.yimg.com/ib/th?id=OPAC.o%2b7Wivmr9gjGcw474C474&o=5&pid=21.1&w=&h=" class="card-img-top" alt="shoes">
-                <div class="card-body">
-                  <h5 class="card-title">Shoes</h5>
-                  <p class="card-text"><b>price:</b><i class="bi bi-currency-rupee"></i>8000</p>
-                  <a href="product_detail.html" class="btn btn-primary">See Detail</a>
-                </div>
-              </div>
-            </div><!--product 4-->
-          </div>
-        </div><!-- product list section end -->
-    </div><!--Main section end or 2nd row end -->
+<div class="info">
 
-    <div class="row mt-4 bg-secondary text-white"><!--Footer section start or 3nd row start -->
-      <div class="col-md-4 p-4">
-        <h5>address</h5><hr>
-        22-B,1st Floor,<br>
-        Rainbow  Plaza<br>
-        Shivar chowk,pimple saudager,<br>
-        Pune 411027
-      </div>
-      <div class="col-md-4 p-4">
-        <h5>Quick Links</h5><hr>
-        <a href="index.html" style="text-decoration: none;">Home</a><br>
-        <a href="#">About</a><br>
-        <a href="#">Contact</a>
-      </div>
-      <div class="col-md-4 p-4">
-        <h5>Social Media icons</h5><hr>
-        <a href=""><h4><i class="bi bi-linkedin"></i></h4></a>
-        <a href=""><h4><i class="bi bi-facebook"></i></h4></a>
-        <a href=""><h4><i class="bi bi-instagram"></i></h4></a>
-        <a href=""><h4><i class="bi bi-twitter"></i></h4></a>
-      </div>
-    </div><!--Footer section end or 3nd row end -->
+    <div class="infoBox">
+        <small>COLOR CHOOSER</small>
+        <strong id="bidder">-</strong>
+    </div>
 
-    <script stc="static/js/bootstrap.min.js"></script>
-    <script src="static/js/popper.js"></script>
+    <div class="infoBox">
+        <small>HIGHEST BID</small>
+        <strong id="bid">-</strong>
+    </div>
+
+    <div class="infoBox">
+        <small>TRUMP</small>
+        <strong id="trump">🔒 Hidden</strong>
+    </div>
+
+    <div class="infoBox">
+        <small>TRICKS</small>
+        <strong id="tricks">0 / 8</strong>
+    </div>
+
+</div>
+
+
+<div class="teams">
+
+    <div id="team13" class="team">
+
+        🟢 P1 + P3
+
+        <div
+            id="score13"
+            class="teamScore">
+            0
+        </div>
+
+        <div class="teamBid">
+            Contract:
+            <span id="contract13">-</span>
+        </div>
+
+        Tricks:
+        <span id="teamTricks13">0</span>
+
+    </div>
+
+
+    <div id="team24" class="team">
+
+        🔵 P2 + P4
+
+        <div
+            id="score24"
+            class="teamScore">
+            0
+        </div>
+
+        <div class="teamBid">
+            Contract:
+            <span id="contract24">-</span>
+        </div>
+
+        Tricks:
+        <span id="teamTricks24">0</span>
+
+    </div>
+
+</div>
+
+
+<div class="tableBox">
+
+<div class="table">
+
+    <div id="seat3" class="seat p3">
+
+        <div class="name">P3</div>
+
+        <div class="seatInfo">
+            Tricks:
+            <span id="t3">0</span>
+        </div>
+
+        <div id="think3" class="thinking"></div>
+
+    </div>
+
+
+    <div id="seat2" class="seat p2">
+
+        <div class="name">P2</div>
+
+        <div class="seatInfo">
+            Tricks:
+            <span id="t2">0</span>
+        </div>
+
+        <div id="think2" class="thinking"></div>
+
+    </div>
+
+
+    <div id="seat4" class="seat p4">
+
+        <div class="name">P4</div>
+
+        <div class="seatInfo">
+            Tricks:
+            <span id="t4">0</span>
+        </div>
+
+        <div id="think4" class="thinking"></div>
+
+    </div>
+
+
+    <div id="seat1" class="seat p1">
+
+        <div class="name">
+            P1 — तुम
+        </div>
+
+        <div class="seatInfo">
+            Tricks:
+            <span id="t1">0</span>
+        </div>
+
+    </div>
+
+
+    <div id="center" class="center">
+        NEW GAME
+    </div>
+
+
+    <div id="trick" class="trick"></div>
+
+</div>
+
+</div>
+
+
+<div
+    id="status"
+    class="status">
+    New Game दबाओ.
+</div>
+
+
+<!-- BIDDING -->
+
+<div
+    id="bidPanel"
+    class="panel"
+    style="display:none">
+
+    <div class="panelTitle">
+        🔨 Bidding
+    </div>
+
+    <div>
+        सभी players को अभी
+        <b>5 cards</b> मिले हैं।
+    </div>
+
+    <div class="buttons mt-2">
+
+        <button
+            class="btn btn-light"
+            onclick="playerBid(5)">
+            5
+        </button>
+
+        <button
+            class="btn btn-light"
+            onclick="playerBid(6)">
+            6
+        </button>
+
+        <button
+            class="btn btn-light"
+            onclick="playerBid(7)">
+            7
+        </button>
+
+        <button
+            class="btn btn-light"
+            onclick="playerBid(8)">
+            8
+        </button>
+
+        <button
+            class="btn btn-outline-light"
+            onclick="playerPass()">
+            Pass
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- COLOR -->
+
+<div
+    id="colorPanel"
+    class="panel"
+    style="display:none">
+
+    <div class="panelTitle">
+        🎨 Trump Choose करो
+    </div>
+
+    <div>
+        Trump hidden रहेगा।
+    </div>
+
+    <div class="buttons mt-2">
+
+        <button
+            class="colorButton"
+            onclick="chooseTrump('heart')">
+            ♥️
+        </button>
+
+        <button
+            class="colorButton"
+            onclick="chooseTrump('diamond')">
+            ♦️
+        </button>
+
+        <button
+            class="colorButton"
+            onclick="chooseTrump('spade')">
+            ♠️
+        </button>
+
+        <button
+            class="colorButton"
+            onclick="chooseTrump('club')">
+            ♣️
+        </button>
+
+        <button
+            class="colorButton"
+            onclick="chooseTrump('joker')">
+            🃏
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- HAND -->
+
+<div class="handTitle">
+
+    <span>
+        🃏 तुम्हारे Cards
+    </span>
+
+    <span id="count">
+        0 cards
+    </span>
+
+</div>
+
+
+<div id="hand" class="hand"></div>
+
+
+<!-- REVEAL -->
+
+<div
+    id="revealPanel"
+    class="panel"
+    style="display:none">
+
+    <div class="revealBox">
+
+        <div class="panelTitle">
+            🔥 COLOR REVEAL AVAILABLE
+        </div>
+
+        <div>
+            तुम्हारे पास चली हुई
+            <b id="leadText">suit</b>
+            का कोई card नहीं है।
+        </div>
+
+        <div class="mt-2">
+
+            <button
+                class="btn btn-warning"
+                onclick="revealColor()">
+                🔥 COLOR REVEAL
+            </button>
+
+            <button
+                class="btn btn-light"
+                onclick="skipReveal()">
+                Color मत खोलो
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- AI CARDS -->
+
+<div
+    id="aiCards"
+    class="panel aiCards">
+
+    <div class="panelTitle">
+        👁️ AI Testing Cards
+    </div>
+
+    <div id="aiCardsContent"></div>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<div class="panel">
+
+    <div class="panelTitle">
+        📜 Game History
+    </div>
+
+    <div id="history" class="history"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   CONSTANTS
+========================================================= */
+
+const STORAGE_KEY = "32CardGameScores_v4";
+
+
+const SUITS = {
+
+    heart:{
+        symbol:"♥️",
+        red:true
+    },
+
+    diamond:{
+        symbol:"♦️",
+        red:true
+    },
+
+    spade:{
+        symbol:"♠️",
+        red:false
+    },
+
+    club:{
+        symbol:"♣️",
+        red:false
+    }
+
+};
+
+
+const RANKS = [
+
+    ["7",7],
+    ["8",8],
+    ["9",9],
+    ["10",10],
+    ["J",11],
+    ["Q",12],
+    ["K",13],
+    ["A",14]
+
+];
+
+
+/* =========================================================
+   PLAYERS
+========================================================= */
+
+const players = [
+
+    {
+        id:0,
+        name:"P1",
+        hand:[],
+        tricks:0,
+        bid:0,
+        passed:false
+    },
+
+    {
+        id:1,
+        name:"P2",
+        hand:[],
+        tricks:0,
+        bid:0,
+        passed:false
+    },
+
+    {
+        id:2,
+        name:"P3",
+        hand:[],
+        tricks:0,
+        bid:0,
+        passed:false
+    },
+
+    {
+        id:3,
+        name:"P4",
+        hand:[],
+        tricks:0,
+        bid:0,
+        passed:false
+    }
+
+];
+
+
+/* =========================================================
+   SCORE
+========================================================= */
+
+let savedScores =
+    loadScores();
+
+
+function loadScores(){
+
+    try{
+
+        const data =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+        if(!data){
+
+            return {
+                "13":0,
+                "24":0
+            };
+
+        }
+
+        const parsed =
+            JSON.parse(data);
+
+        return {
+
+            "13":
+                Number(parsed["13"])||0,
+
+            "24":
+                Number(parsed["24"])||0
+
+        };
+
+    }
+    catch(e){
+
+        return {
+            "13":0,
+            "24":0
+        };
+
+    }
+
+}
+
+
+function saveScores(){
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(savedScores)
+    );
+
+}
+
+
+/* =========================================================
+   GAME
+========================================================= */
+
+const game = {
+
+    phase:"waiting",
+
+    deck:[],
+
+    used:new Set(),
+
+    bidder:null,
+
+    highestBid:0,
+
+    trump:null,
+
+    trumpHidden:true,
+
+    currentPlayer:null,
+
+    leadSuit:null,
+
+    trick:[],
+
+    completed:0,
+
+    bidTurn:0,
+
+    history:[],
+
+    thinking:null,
+
+    showAI:false,
+
+    revealDecision:false,
+
+    revealSkipped:false,
+
+    contractTeam:null,
+
+    contractBid:0,
+
+    roundResult:null
+
+};
+
+
+/* =========================================================
+   MENU
+========================================================= */
+
+function toggleMenu(){
+
+    document
+        .getElementById("menu")
+        .classList.toggle("show");
+
+}
+
+
+function closeMenu(){
+
+    document
+        .getElementById("menu")
+        .classList.remove("show");
+
+}
+
+
+document.addEventListener(
+    "click",
+    function(e){
+
+        const menu =
+            document.getElementById("menu");
+
+        const wrap =
+            document.querySelector(".menuWrap");
+
+        if(
+            menu.classList.contains("show") &&
+            !wrap.contains(e.target)
+        ){
+
+            menu.classList.remove("show");
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   RESET SCORE
+========================================================= */
+
+function resetScore(){
+
+    if(
+        !confirm(
+            "क्या दोनों teams का पूरा score reset करना है?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    savedScores={
+        "13":0,
+        "24":0
+    };
+
+
+    saveScores();
+
+    render();
+
+    addHistory(
+        "🗑️ Score reset किया गया."
+    );
+
+}
+
+
+/* =========================================================
+   DECK
+========================================================= */
+
+function createDeck(){
+
+    const deck=[];
+
+
+    for(
+        const suit of Object.keys(SUITS)
+    ){
+
+        for(
+            const [rank,value] of RANKS
+        ){
+
+            if(
+                suit==="spade" &&
+                rank==="7"
+            ){
+
+                continue;
+
+            }
+
+
+            deck.push({
+
+                id:
+                    rank+
+                    "_" +
+                    suit,
+
+                rank:rank,
+
+                value:value,
+
+                suit:suit,
+
+                symbol:
+                    SUITS[suit].symbol,
+
+                red:
+                    SUITS[suit].red,
+
+                joker:false
+
+            });
+
+        }
+
+    }
+
+
+    deck.push({
+
+        id:"JOKER",
+
+        rank:"JOKER",
+
+        value:100,
+
+        suit:"joker",
+
+        symbol:"🃏",
+
+        red:false,
+
+        joker:true
+
+    });
+
+
+    if(deck.length!==32){
+
+        throw new Error(
+            "Deck error: "+
+            deck.length
+        );
+
+    }
+
+
+    return deck;
+
+}
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffle(deck){
+
+    for(
+        let i=deck.length-1;
+        i>0;
+        i--
+    ){
+
+        const j =
+            Math.floor(
+                Math.random()*(i+1)
+            );
+
+
+        [
+            deck[i],
+            deck[j]
+        ] =
+        [
+            deck[j],
+            deck[i]
+        ];
+
+    }
+
+}
+
+
+/* =========================================================
+   NEW GAME
+========================================================= */
+
+function newGame(){
+
+    game.phase="dealing";
+
+    game.deck=createDeck();
+
+    shuffle(game.deck);
+
+    game.used.clear();
+
+    game.bidder=null;
+
+    game.highestBid=0;
+
+    game.trump=null;
+
+    game.trumpHidden=true;
+
+    game.currentPlayer=null;
+
+    game.leadSuit=null;
+
+    game.trick=[];
+
+    game.completed=0;
+
+    game.bidTurn=0;
+
+    game.history=[];
+
+    game.thinking=null;
+
+    game.revealDecision=false;
+
+    game.revealSkipped=false;
+
+    game.contractTeam=null;
+
+    game.contractBid=0;
+
+    game.roundResult=null;
+
+
+    players.forEach(p=>{
+
+        p.hand=[];
+
+        p.tricks=0;
+
+        p.bid=0;
+
+        p.passed=false;
+
+    });
+
+
+    /*
+     * पहले 5 cards
+     */
+
+    for(
+        let round=0;
+        round<5;
+        round++
+    ){
+
+        for(
+            const p of players
+        ){
+
+            giveCard(p);
+
+        }
+
+    }
+
+
+    sortHands();
+
+
+    addHistory(
+        "🎴 सभी players को 5-5 cards मिले."
+    );
+
+
+    game.phase="bidding";
+
+    game.bidTurn=0;
+
+
+    setStatus(
+        "🔨 P1 की bidding है."
+    );
+
+
+    render();
+
+}
+
+
+/* =========================================================
+   GIVE CARD
+========================================================= */
+
+function giveCard(player){
+
+    if(
+        game.deck.length===0
+    ){
+
+        throw new Error(
+            "Deck खत्म."
+        );
+
+    }
+
+
+    const card =
+        game.deck.pop();
+
+
+    if(
+        game.used.has(card.id)
+    ){
+
+        throw new Error(
+            "Duplicate card."
+        );
+
+    }
+
+
+    game.used.add(card.id);
+
+    player.hand.push(card);
+
+}
+
+
+/* =========================================================
+   EXTRA CARDS
+========================================================= */
+
+function dealExtraCards(){
+
+    for(
+        let round=0;
+        round<3;
+        round++
+    ){
+
+        for(
+            const p of players
+        ){
+
+            giveCard(p);
+
+        }
+
+    }
+
+
+    sortHands();
+
+
+    addHistory(
+        "🃏 3-3 extra cards मिले."
+    );
+
+}
+
+
+/* =========================================================
+   SORT
+========================================================= */
+
+function sortHands(){
+
+    players.forEach(p=>{
+
+        p.hand.sort((a,b)=>{
+
+            if(a.joker)
+                return 1;
+
+            if(b.joker)
+                return -1;
+
+
+            if(
+                a.suit!==b.suit
+            ){
+
+                return (
+                    suitOrder(a.suit)-
+                    suitOrder(b.suit)
+                );
+
+            }
+
+
+            return a.value-b.value;
+
+        });
+
+    });
+
+}
+
+
+function suitOrder(suit){
+
+    return {
+
+        diamond:1,
+        heart:2,
+        spade:3,
+        club:4
+
+    }[suit]||99;
+
+}
+
+
+/* =========================================================
+   BIDDING
+========================================================= */
+
+function playerBid(value){
+
+    if(
+        game.phase!=="bidding" ||
+        game.bidTurn!==0
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        value<=game.highestBid
+    ){
+
+        setStatus(
+            "❌ Current bid से बड़ी bid लगाओ."
+        );
+
+        return;
+
+    }
+
+
+    players[0].bid=value;
+
+    players[0].passed=false;
+
+    game.highestBid=value;
+
+    game.bidder=0;
+
+
+    addHistory(
+        "P1 → Bid "+value
+    );
+
+
+    game.bidTurn++;
+
+    setTimeout(
+        nextAIBid,
+        400
+    );
+
+}
+
+
+function playerPass(){
+
+    if(
+        game.phase!=="bidding" ||
+        game.bidTurn!==0
+    ){
+
+        return;
+
+    }
+
+
+    players[0].passed=true;
+
+    players[0].bid=0;
+
+
+    addHistory(
+        "P1 → Pass"
+    );
+
+
+    game.bidTurn++;
+
+    setTimeout(
+        nextAIBid,
+        400
+    );
+
+}
+
+
+/* =========================================================
+   AI BID
+========================================================= */
+
+function nextAIBid(){
+
+    if(
+        game.bidTurn>3
+    ){
+
+        finishBidding();
+
+        return;
+
+    }
+
+
+    const index =
+        game.bidTurn;
+
+
+    const p =
+        players[index];
+
+
+    const possible =
+        estimateBestBid(p.hand);
+
+
+    let bid=0;
+
+
+    /*
+     * AI हमेशा अपनी estimated
+     * capacity से ऊपर जाने की कोशिश
+     * नहीं करेगा.
+     */
+
+    if(
+        possible>game.highestBid
+    ){
+
+        bid=possible;
+
+    }
+
+
+    if(
+        bid>8
+    ){
+
+        bid=8;
+
+    }
+
+
+    if(
+        bid>game.highestBid
+    ){
+
+        p.bid=bid;
+
+        p.passed=false;
+
+        game.highestBid=bid;
+
+        game.bidder=index;
+
+
+        addHistory(
+            p.name+
+            " → Bid "+
+            bid
+        );
+
+    }
+    else{
+
+        p.bid=0;
+
+        p.passed=true;
+
+
+        addHistory(
+            p.name+
+            " → Pass"
+        );
+
+    }
+
+
+    game.bidTurn++;
+
+
+    setTimeout(
+        nextAIBid,
+        450
+    );
+
+}
+
+
+/* =========================================================
+   AI BID ESTIMATION
+========================================================= */
+
+function estimateBestBid(hand){
+
+    let score=0;
+
+    const suits={
+        heart:0,
+        diamond:0,
+        spade:0,
+        club:0
+    };
+
+
+    let joker=false;
+
+
+    hand.forEach(card=>{
+
+        if(card.joker){
+
+            joker=true;
+
+            return;
+
+        }
+
+
+        suits[card.suit]++;
+
+
+        if(card.value===14)
+            score+=2.4;
+
+        else if(card.value===13)
+            score+=1.7;
+
+        else if(card.value===12)
+            score+=1.2;
+
+        else if(card.value===11)
+            score+=.7;
+
+        else if(card.value===10)
+            score+=.3;
+
+    });
+
+
+    const maxSuit =
+        Math.max(
+            ...Object.values(suits)
+        );
+
+
+    /*
+     * Trump choose करने के बाद
+     * strongest suit का फायदा.
+     */
+
+    if(maxSuit>=4)
+        score+=1.5;
+
+    else if(maxSuit===3)
+        score+=.8;
+
+
+    /*
+     * Joker को बहुत ज्यादा
+     * weight नहीं देना.
+     */
+
+    if(joker)
+        score+=1.4;
+
+
+    let bid=
+        Math.floor(score);
+
+
+    if(bid<5)
+        return 0;
+
+
+    if(bid>8)
+        bid=8;
+
+
+    return bid;
+
+}
+
+
+/* =========================================================
+   FINISH BIDDING
+========================================================= */
+
+function finishBidding(){
+
+    if(
+        game.bidder===null
+    ){
+
+        /*
+         * अगर सब pass:
+         * P1 को minimum contract 5.
+         */
+
+        game.bidder=0;
+
+        game.highestBid=5;
+
+        players[0].bid=5;
+
+    }
+
+
+    game.contractBid=
+        game.highestBid;
+
+
+    game.contractTeam=
+        getTeam(game.bidder);
+
+
+    game.phase="trump";
+
+
+    addHistory(
+        players[game.bidder].name+
+        " ने highest bid "+
+        game.contractBid+
+        " की."
+    );
+
+
+    addHistory(
+        "Contract team: "+
+        teamName(game.contractTeam)
+    );
+
+
+    if(
+        game.bidder===0
+    ){
+
+        setStatus(
+            "🎨 Trump choose करो."
+        );
+
+    }
+    else{
+
+        setStatus(
+            players[game.bidder].name+
+            " Trump choose कर रहा है."
+        );
+
+    }
+
+
+    render();
+
+
+    if(
+        game.bidder!==0
+    ){
+
+        setTimeout(
+            aiChooseTrump,
+            700
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   HUMAN TRUMP
+========================================================= */
+
+function chooseTrump(suit){
+
+    if(
+        game.phase!=="trump" ||
+        game.bidder!==0
+    ){
+
+        return;
+
+    }
+
+
+    game.trump=suit;
+
+    game.trumpHidden=true;
+
+
+    addHistory(
+        "P1 ने Trump set किया."
+    );
+
+
+    dealExtraCards();
+
+    startPlaying();
+
+}
+
+
+/* =========================================================
+   AI TRUMP
+========================================================= */
+
+function aiChooseTrump(){
+
+    const p =
+        players[game.bidder];
+
+
+    game.trump =
+        bestTrump(p);
+
+
+    game.trumpHidden=true;
+
+
+    addHistory(
+        p.name+
+        " ने Trump set किया."
+    );
+
+
+    dealExtraCards();
+
+    startPlaying();
+
+}
+
+
+/* =========================================================
+   BEST TRUMP
+========================================================= */
+
+function bestTrump(player){
+
+    const scores={
+        heart:0,
+        diamond:0,
+        spade:0,
+        club:0,
+        joker:0
+    };
+
+
+    player.hand.forEach(card=>{
+
+        if(card.joker){
+
+            /*
+             * Joker Trump एक अलग
+             * special contract है.
+             */
+
+            scores.joker+=
+                80;
+
+            return;
+
+        }
+
+
+        scores[card.suit]+=10;
+
+
+        if(card.value===14)
+            scores[card.suit]+=30;
+
+        else if(card.value===13)
+            scores[card.suit]+=20;
+
+        else if(card.value===12)
+            scores[card.suit]+=12;
+
+        else if(card.value===11)
+            scores[card.suit]+=7;
+
+    });
+
+
+    /*
+     * Joker तभी Trump चुनेगा
+     * जब उसकी special power
+     * contract के लिए useful हो.
+     */
+
+    if(
+        player.hand.some(c=>c.joker)
+    ){
+
+        const normalBest =
+            Math.max(
+                scores.heart,
+                scores.diamond,
+                scores.spade,
+                scores.club
+            );
+
+
+        if(
+            scores.joker >
+            normalBest+12
+        ){
+
+            return "joker";
+
+        }
+
+    }
+
+
+    return [
+        "heart",
+        "diamond",
+        "spade",
+        "club"
+    ].sort(
+        (a,b)=>
+            scores[b]-scores[a]
+    )[0];
+
+}
+
+
+/* =========================================================
+   START PLAY
+========================================================= */
+
+function startPlaying(){
+
+    game.phase="playing";
+
+    game.trick=[];
+
+    game.leadSuit=null;
+
+    game.completed=0;
+
+    game.revealDecision=false;
+
+    game.revealSkipped=false;
+
+
+    game.currentPlayer=
+        (game.bidder+1)%4;
+
+
+    addHistory(
+        "🎮 Playing शुरू."
+    );
+
+
+    addHistory(
+        "▶️ "+
+        players[game.currentPlayer].name+
+        " पहले card डालेगा."
+    );
+
+
+    setStatus(
+        players[game.currentPlayer].name+
+        " की पहली बारी."
+    );
+
+
+    render();
+
+    runAI();
+
+}
+
+
+/* =========================================================
+   LEAD SUIT
+========================================================= */
+
+function hasLeadSuit(player){
+
+    if(
+        game.leadSuit===null
+    ){
+
+        return false;
+
+    }
+
+
+    return player.hand.some(
+        c=>
+            !c.joker &&
+            c.suit===game.leadSuit
+    );
+
+}
+
+
+/* =========================================================
+   LAST TRICK JOKER
+========================================================= */
+
+function isLastTrick(){
+
+    return game.completed===7;
+
+}
+
+
+/*
+ * Last trick में बचा Joker
+ * ♠7 बन जाता है.
+ */
+
+function effectiveCard(card){
+
+    if(
+        card.joker &&
+        isLastTrick() &&
+        game.trump==="spade"
+    ){
+
+        return {
+
+            rank:"7",
+
+            value:7,
+
+            suit:"spade",
+
+            joker:false
+
+        };
+
+    }
+
+
+    return card;
+
+}
+
+
+/* =========================================================
+   LEGAL MOVE
+========================================================= */
+
+function legalMove(player,card){
+
+    /*
+     * Joker पहली चाल में नहीं.
+     */
+
+    if(card.joker){
+
+        if(
+            game.trick.length===0
+        ){
+
+            return {
+                legal:false,
+                reason:
+                    "Joker पहली चाल में नहीं डाल सकते."
+            };
+
+        }
+
+
+        /*
+         * आखिरी बाज़ी में Joker
+         * ♠7 है.
+         */
+
+        if(
+            isLastTrick() &&
+            game.trump==="spade"
+        ){
+
+            const effective =
+                effectiveCard(card);
+
+
+            /*
+             * अब इसे spade 7 की तरह
+             * follow-suit करना होगा.
+             */
+
+            if(
+                game.leadSuit!==null
+            ){
+
+                const hasLead =
+                    hasLeadSuit(player);
+
+
+                if(
+                    hasLead &&
+                    effective.suit!==game.leadSuit
+                ){
+
+                    return {
+
+                        legal:false,
+
+                        reason:
+                            "तुम्हारे पास "+
+                            suitSymbol(game.leadSuit)+
+                            " है."
+
+                    };
+
+                }
+
+            }
+
+
+            return {
+                legal:true
+            };
+
+        }
+
+
+        /*
+         * Normal Joker:
+         * किसी भी card को काट सकता है.
+         */
+
+        return {
+            legal:true
+        };
+
+    }
+
+
+    /*
+     * First card.
+     */
+
+    if(
+        game.trick.length===0
+    ){
+
+        return {
+            legal:true
+        };
+
+    }
+
+
+    /*
+     * अगर lead suit मौजूद है
+     * तो follow करना होगा.
+     */
+
+    if(
+        game.leadSuit!==null
+    ){
+
+        const hasLead =
+            hasLeadSuit(player);
+
+
+        if(hasLead){
+
+            if(
+                card.suit!==game.leadSuit
+            ){
+
+                return {
+
+                    legal:false,
+
+                    reason:
+                        "तुम्हारे पास "+
+                        suitSymbol(game.leadSuit)+
+                        " है."
+
+                };
+
+            }
+
+        }
+
+    }
+
+
+    return {
+        legal:true
+    };
+
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+function shouldShowReveal(player){
+
+    if(
+        game.phase!=="playing"
+    )
+        return false;
+
+
+    if(
+        game.trick.length===0
+    )
+        return false;
+
+
+    if(
+        !game.trumpHidden
+    )
+        return false;
+
+
+    if(
+        game.revealSkipped
+    )
+        return false;
+
+
+    if(
+        game.leadSuit===null
+    )
+        return false;
+
+
+    /*
+     * Joker Trump होने पर
+     * कोई suit-trump नहीं.
+     */
+
+    if(
+        game.trump==="joker"
+    ){
+
+        return false;
+
+    }
+
+
+    if(
+        hasLeadSuit(player)
+    )
+        return false;
+
+
+    return true;
+
+}
+
+
+function revealColor(){
+
+    if(
+        game.currentPlayer!==0
+    )
+        return;
+
+
+    if(
+        !shouldShowReveal(players[0])
+    )
+        return;
+
+
+    game.trumpHidden=false;
+
+    game.revealDecision=true;
+
+
+    addHistory(
+        "🔥 P1 ने COLOR REVEAL किया → "+
+        suitSymbol(game.trump)
+    );
+
+
+    setStatus(
+        "🔥 "+
+        suitSymbol(game.trump)+
+        " खुल गया."
+    );
+
+
+    render();
+
+}
+
+
+function skipReveal(){
+
+    if(
+        game.currentPlayer!==0
+    )
+        return;
+
+
+    if(
+        !shouldShowReveal(players[0])
+    )
+        return;
+
+
+    game.revealSkipped=true;
+
+    game.revealDecision=true;
+
+
+    addHistory(
+        "P1 ने color hidden रखा."
+    );
+
+
+    setStatus(
+        "Color hidden रहेगा."
+    );
+
+
+    render();
+
+}
+
+
+/* =========================================================
+   PLAYER PLAY
+========================================================= */
+
+function playerPlay(id){
+
+    if(
+        game.phase!=="playing"
+    )
+        return;
+
+
+    if(
+        game.currentPlayer!==0
+    )
+        return;
+
+
+    if(
+        shouldShowReveal(players[0]) &&
+        !game.revealDecision
+    ){
+
+        setStatus(
+            "🔥 पहले Reveal या Color मत खोलो चुनो."
+        );
+
+        return;
+
+    }
+
+
+    const player =
+        players[0];
+
+
+    const card =
+        player.hand.find(
+            c=>c.id===id
+        );
+
+
+    if(!card)
+        return;
+
+
+    const check =
+        legalMove(
+            player,
+            card
+        );
+
+
+    if(
+        !check.legal
+    ){
+
+        setStatus(
+            "❌ "+
+            check.reason
+        );
+
+        return;
+
+    }
+
+
+    playCard(
+        0,
+        card
+    );
+
+}
+
+
+/* =========================================================
+   PLAY CARD
+========================================================= */
+
+function playCard(
+    playerIndex,
+    card
+){
+
+    const player =
+        players[playerIndex];
+
+
+    const index =
+        player.hand.findIndex(
+            c=>c.id===card.id
+        );
+
+
+    if(index===-1)
+        return;
+
+
+    player.hand.splice(
+        index,
+        1
+    );
+
+
+    /*
+     * Joker lead नहीं बनाता,
+     * सिवाय last trick में
+     * Joker-as-7 के case में.
+     */
+
+    if(
+        game.trick.length===0
+    ){
+
+        const effective =
+            effectiveCard(card);
+
+
+        if(
+            !effective.joker
+        ){
+
+            game.leadSuit=
+                effective.suit;
+
+        }
+
+    }
+
+
+    game.trick.push({
+
+        player:playerIndex,
+
+        card:card
+
+    });
+
+
+    addHistory(
+        player.name+
+        " → "+
+        cardText(card)
+    );
+
+
+    if(
+        game.trick.length<4
+    ){
+
+        game.currentPlayer =
+            (game.currentPlayer+1)%4;
+
+
+        game.revealDecision=false;
+
+        game.revealSkipped=false;
+
+
+        render();
+
+        runAI();
+
+    }
+    else{
+
+        resolveTrick();
+
+    }
+
+}
+
+
+/* =========================================================
+   CARD POWER
+========================================================= */
+
+function beats(
+    challenger,
+    current
+){
+
+    const a =
+        effectiveCard(challenger);
+
+    const b =
+        effectiveCard(current);
+
+
+    /*
+     * Last trick में अगर Joker
+     * spade 7 बना है तो वह
+     * normal card है.
+     */
+
+    if(
+        a.joker
+    ){
+
+        /*
+         * Joker Trump हो या normal,
+         * special Joker सबसे बड़ा.
+         */
+
+        return true;
+
+    }
+
+
+    if(
+        b.joker
+    ){
+
+        return false;
+
+    }
+
+
+    /*
+     * Joker Trump:
+     * कोई suit trump नहीं.
+     */
+
+    if(
+        game.trump==="joker"
+    ){
+
+        /*
+         * Same suit में बड़ा card.
+         */
+
+        if(
+            a.suit===b.suit
+        ){
+
+            return a.value>b.value;
+
+        }
+
+
+        return false;
+
+    }
+
+
+    /*
+     * Revealed trump.
+     */
+
+    const trumpActive =
+        (
+            game.trump!==null &&
+            !game.trumpHidden
+        );
+
+
+    if(trumpActive){
+
+        const aTrump =
+            a.suit===game.trump;
+
+
+        const bTrump =
+            b.suit===game.trump;
+
+
+        if(
+            aTrump &&
+            !bTrump
+        ){
+
+            return true;
+
+        }
+
+
+        if(
+            !aTrump &&
+            bTrump
+        ){
+
+            return false;
+
+        }
+
+    }
+
+
+    /*
+     * Same suit.
+     */
+
+    if(
+        a.suit===b.suit
+    ){
+
+        return a.value>b.value;
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   WINNER
+========================================================= */
+
+function currentWinner(){
+
+    if(
+        game.trick.length===0
+    )
+        return null;
+
+
+    let winner =
+        game.trick[0];
+
+
+    for(
+        let i=1;
+        i<game.trick.length;
+        i++
+    ){
+
+        if(
+            beats(
+                game.trick[i].card,
+                winner.card
+            )
+        ){
+
+            winner =
+                game.trick[i];
+
+        }
+
+    }
+
+
+    return winner;
+
+}
+
+
+/* =========================================================
+   LEGAL AI
+========================================================= */
+
+function getLegalCards(player){
+
+    return player.hand.filter(
+        card=>
+            legalMove(
+                player,
+                card
+            ).legal
+    );
+
+}
+
+
+/* =========================================================
+   AI REVEAL
+========================================================= */
+
+function aiShouldReveal(player){
+
+    if(
+        !shouldShowReveal(player)
+    )
+        return false;
+
+
+    const trumpCards =
+        player.hand.filter(
+            c=>
+                !c.joker &&
+                c.suit===game.trump
+        );
+
+
+    if(
+        trumpCards.length===0
+    ){
+
+        return false;
+
+    }
+
+
+    let score=0;
+
+
+    trumpCards.forEach(c=>{
+
+        if(c.value===14)
+            score+=35;
+
+        else if(c.value===13)
+            score+=25;
+
+        else if(c.value===12)
+            score+=15;
+
+        else
+            score+=4;
+
+    });
+
+
+    if(
+        player.hand.some(
+            c=>c.joker
+        )
+    ){
+
+        score+=10;
+
+    }
+
+
+    const winner =
+        currentWinner();
+
+
+    if(
+        winner &&
+        getTeam(winner.player)!==
+        getTeam(player.id)
+    ){
+
+        score+=30;
+
+    }
+
+
+    return score>=35;
+
+}
+
+
+/* =========================================================
+   SMART AI
+========================================================= */
+
+function smartAI(
+    player,
+    legalCards
+){
+
+    const team =
+        getTeam(player.id);
+
+
+    const opponent =
+        team==="13"
+            ?"24"
+            :"13";
+
+
+    const ownTricks =
+        teamTricks(team);
+
+
+    const enemyTricks =
+        teamTricks(opponent);
+
+
+    const winner =
+        currentWinner();
+
+
+    const partnerWinning =
+        winner &&
+        getTeam(winner.player)===team;
+
+
+    const enemyWinning =
+        winner &&
+        getTeam(winner.player)!==team;
+
+
+    const choices=[];
+
+
+    legalCards.forEach(card=>{
+
+        let score=0;
+
+
+        /*
+         * Joker
+         */
+
+        if(card.joker){
+
+            /*
+             * Last trick:
+             * Joker-as-7 को special Joker
+             * मत समझो.
+             */
+
+            if(
+                isLastTrick() &&
+                game.trump==="spade"
+            ){
+
+                const wins =
+                    simulatedWin(
+                        player.id,
+                        card
+                    );
+
+
+                if(wins)
+                    score+=400;
+
+                else
+                    score-=30;
+
+
+            }
+            else{
+
+                if(enemyWinning)
+                    score+=900;
+
+                if(partnerWinning)
+                    score-=700;
+
+                if(
+                    ownTricks>=
+                    game.contractBid
+                )
+                    score-=400;
+
+                if(
+                    enemyTricks>=5
+                )
+                    score+=800;
+
+                if(
+                    game.completed<3 &&
+                    !enemyWinning
+                )
+                    score-=250;
+
+            }
+
+
+            choices.push({
+
+                card:card,
+
+                score:
+                    score+
+                    Math.random()*3
+
+            });
+
+
+            return;
+
+        }
+
+
+        const wins =
+            simulatedWin(
+                player.id,
+                card
+            );
+
+
+        const trumpActive =
+            !game.trumpHidden &&
+            game.trump!=="joker";
+
+
+        const isTrump =
+            trumpActive &&
+            card.suit===game.trump;
+
+
+        /*
+         * Partner winning.
+         */
+
+        if(partnerWinning){
+
+            if(wins)
+                score-=650;
+
+            if(card.value<=9)
+                score+=120;
+
+            if(card.value>=13)
+                score-=200;
+
+        }
+
+
+        /*
+         * Enemy winning.
+         */
+
+        if(enemyWinning){
+
+            if(wins)
+                score+=900;
+
+        }
+
+
+        /*
+         * Contract पूरा करना जरूरी.
+         */
+
+        if(
+            ownTricks<
+            game.contractBid
+        ){
+
+            if(wins)
+                score+=700;
+
+        }
+        else{
+
+            /*
+             * Contract already safe:
+             * unnecessary high cards waste मत करो.
+             */
+
+            if(!wins)
+                score+=100;
+
+        }
+
+
+        /*
+         * Opponent contract रोकना.
+         */
+
+        if(
+            enemyTricks>=5
+        ){
+
+            if(wins)
+                score+=800;
+
+        }
+
+
+        /*
+         * Trump.
+         */
+
+        if(isTrump){
+
+            if(wins)
+                score+=250;
+
+            else
+                score-=60;
+
+        }
+
+
+        /*
+         * High card बचाना.
+         */
+
+        if(
+            card.value>=13 &&
+            !wins
+        ){
+
+            score-=130;
+
+        }
+
+
+        /*
+         * Low card dump.
+         */
+
+        if(
+            card.value<=9 &&
+            !wins
+        ){
+
+            score+=80;
+
+        }
+
+
+        /*
+         * Lead.
+         */
+
+        if(
+            game.trick.length===0
+        ){
+
+            if(
+                ownTricks<
+                game.contractBid
+            ){
+
+                score+=
+                    card.value*4;
+
+            }
+            else{
+
+                score+=
+                    (15-card.value)*5;
+
+            }
+
+        }
+
+
+        /*
+         * Last few cards.
+         */
+
+        if(
+            player.hand.length<=2 &&
+            wins
+        ){
+
+            score+=450;
+
+        }
+
+
+        choices.push({
+
+            card:card,
+
+            score:
+                score+
+                Math.random()*3
+
+        });
+
+    });
+
+
+    choices.sort(
+        (a,b)=>
+            b.score-a.score
+    );
+
+
+    return choices[0].card;
+
+}
+
+
+/* =========================================================
+   SIMULATE WIN
+========================================================= */
+
+function simulatedWin(
+    playerIndex,
+    card
+){
+
+    const simulated = [
+
+        ...game.trick,
+
+        {
+            player:playerIndex,
+            card:card
+        }
+
+    ];
+
+
+    let winner =
+        simulated[0];
+
+
+    for(
+        let i=1;
+        i<simulated.length;
+        i++
+    ){
+
+        if(
+            beats(
+                simulated[i].card,
+                winner.card
+            )
+        ){
+
+            winner =
+                simulated[i];
+
+        }
+
+    }
+
+
+    return (
+        winner.player===
+        playerIndex
+    );
+
+}
+
+
+/* =========================================================
+   RUN AI
+========================================================= */
+
+function runAI(){
+
+    if(
+        game.phase!=="playing"
+    )
+        return;
+
+
+    if(
+        game.currentPlayer===0
+    ){
+
+        if(
+            shouldShowReveal(players[0])
+        ){
+
+            setStatus(
+                "🔥 Color Reveal option है."
+            );
+
+        }
+        else{
+
+            setStatus(
+                "👉 तुम्हारी बारी है."
+            );
+
+        }
+
+
+        render();
+
+        return;
+
+    }
+
+
+    const player =
+        players[
+            game.currentPlayer
+        ];
+
+
+    game.thinking =
+        player.id;
+
+
+    render();
+
+
+    setTimeout(()=>{
+
+        if(
+            shouldShowReveal(player)
+        ){
+
+            if(
+                aiShouldReveal(player)
+            ){
+
+                game.trumpHidden=false;
+
+                game.revealDecision=true;
+
+
+                addHistory(
+                    player.name+
+                    " ने COLOR REVEAL किया → "+
+                    suitSymbol(game.trump)
+                );
+
+            }
+            else{
+
+                game.revealDecision=true;
+
+                game.revealSkipped=true;
+
+
+                addHistory(
+                    player.name+
+                    " ने color hidden रखा."
+                );
+
+            }
+
+        }
+
+
+        const legal =
+            getLegalCards(player);
+
+
+        if(
+            legal.length===0
+        ){
+
+            game.thinking=null;
+
+            return;
+
+        }
+
+
+        const chosen =
+            smartAI(
+                player,
+                legal
+            );
+
+
+        game.thinking=null;
+
+
+        playCard(
+            player.id,
+            chosen
+        );
+
+
+    },700);
+
+}
+
+
+/* =========================================================
+   RESOLVE TRICK
+========================================================= */
+
+function resolveTrick(){
+
+    const winner =
+        currentWinner();
+
+
+    if(!winner)
+        return;
+
+
+    players[
+        winner.player
+    ].tricks++;
+
+
+    game.completed++;
+
+
+    addHistory(
+        "🏆 "+
+        players[winner.player].name+
+        " ने बाज़ी जीती."
+    );
+
+
+    if(
+        winner.card.joker
+    ){
+
+        if(
+            isLastTrick() &&
+            game.trump==="spade"
+        ){
+
+            addHistory(
+                "🃏 अंतिम बाज़ी में Joker = ♠️7."
+            );
+
+        }
+        else{
+
+            addHistory(
+                "🃏 Joker ने बाज़ी काटी."
+            );
+
+        }
+
+    }
+
+
+    /*
+     * 8 tricks तक पूरा खेल चलेगा.
+     */
+
+    if(
+        game.completed>=8
+    ){
+
+        finishContract();
+
+        return;
+
+    }
+
+
+    /*
+     * Winner अगली lead करेगा.
+     */
+
+    game.currentPlayer =
+        winner.player;
+
+
+    render();
+
+
+    setTimeout(()=>{
+
+        game.trick=[];
+
+        game.leadSuit=null;
+
+        game.revealDecision=false;
+
+        game.revealSkipped=false;
+
+
+        setStatus(
+            players[
+                game.currentPlayer
+            ].name+
+            " अगली बाज़ी शुरू करेगा."
+        );
+
+
+        render();
+
+        runAI();
+
+    },1000);
+
+}
+
+
+/* =========================================================
+   FINISH CONTRACT
+========================================================= */
+
+function finishContract(){
+
+    game.phase="finished";
+
+
+    const contractTeam =
+        game.contractTeam;
+
+
+    const bid =
+        game.contractBid;
+
+
+    const tricks =
+        teamTricks(contractTeam);
+
+
+    const success =
+        tricks>=bid;
+
+
+    const opponent =
+        contractTeam==="13"
+            ?"24"
+            :"13";
+
+
+    if(success){
+
+        savedScores[contractTeam]+=bid;
+
+
+        addHistory(
+            "✅ Contract पूरा!"
+        );
+
+
+        addHistory(
+            teamName(contractTeam)+
+            " ने "+
+            tricks+
+            " tricks लेकर "+
+            bid+
+            " points जीते."
+        );
+
+
+        setStatus(
+            "🏆 "+
+            teamName(contractTeam)+
+            " contract जीत गई! +"+
+            bid+
+            " points"
+        );
+
+    }
+    else{
+
+        const minus =
+            bid*2;
+
+
+        savedScores[contractTeam]-=
+            minus;
+
+
+        addHistory(
+            "❌ Contract fail!"
+        );
+
+
+        addHistory(
+            teamName(contractTeam)+
+            " को "+
+            tricks+
+            " tricks मिलीं, जरूरत थी "+
+            bid+
+            "."
+        );
+
+
+        addHistory(
+            "💥 Double Minus: -"+
+            minus
+        );
+
+
+        setStatus(
+            "❌ "+
+            teamName(contractTeam)+
+            " contract हार गई! -"+
+            minus+
+            " points"
+        );
+
+    }
+
+
+    saveScores();
+
+    render();
+
+
+    setTimeout(()=>{
+
+        alert(
+
+            success
+
+                ?
+
+            "🏆 CONTRACT SUCCESS!\n\n"+
+            teamName(contractTeam)+
+            "\nBid = "+
+            bid+
+            "\nTricks = "+
+            tricks+
+            "\n+"+
+            bid+
+            " Points"
+
+                :
+
+            "❌ CONTRACT FAIL!\n\n"+
+            teamName(contractTeam)+
+            "\nBid = "+
+            bid+
+            "\nTricks = "+
+            tricks+
+            "\nDouble Minus = -"+
+            (bid*2)+
+            " Points"
+
+        );
+
+    },300);
+
+}
+
+
+/* =========================================================
+   TEAM
+========================================================= */
+
+function getTeam(id){
+
+    return (
+        id===0 ||
+        id===2
+    )
+    ?"13"
+    :"24";
+
+}
+
+
+function teamTricks(team){
+
+    return players
+        .filter(
+            p=>
+                getTeam(p.id)===team
+        )
+        .reduce(
+            (sum,p)=>
+                sum+p.tricks,
+            0
+        );
+
+}
+
+
+function teamName(team){
+
+    return team==="13"
+        ?"🟢 P1 + P3"
+        :"🔵 P2 + P4";
+
+}
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function suitSymbol(suit){
+
+    if(
+        SUITS[suit]
+    ){
+
+        return SUITS[suit].symbol;
+
+    }
+
+
+    if(
+        suit==="joker"
+    ){
+
+        return "🃏";
+
+    }
+
+
+    return "";
+
+}
+
+
+function cardText(card){
+
+    /*
+     * आखिरी बाज़ी में Joker
+     * spade 7 दिखेगा.
+     */
+
+    if(
+        card.joker &&
+        isLastTrick() &&
+        game.trump==="spade"
+    ){
+
+        return "7♠️";
+
+    }
+
+
+    if(card.joker){
+
+        return "🃏";
+
+    }
+
+
+    return (
+        card.rank+
+        card.symbol
+    );
+
+}
+
+
+function setStatus(text){
+
+    document.getElementById(
+        "status"
+    ).textContent=text;
+
+}
+
+
+function addHistory(text){
+
+    game.history.push(text);
+
+
+    document.getElementById(
+        "history"
+    ).innerHTML=
+
+        game.history
+            .slice()
+            .reverse()
+            .map(
+                x=>
+                    "<div>"+
+                    x+
+                    "</div>"
+            )
+            .join("");
+
+}
+
+
+/* =========================================================
+   RENDER HAND
+========================================================= */
+
+function renderHand(){
+
+    const area =
+        document.getElementById(
+            "hand"
+        );
+
+
+    area.innerHTML="";
+
+
+    document.getElementById(
+        "count"
+    ).textContent =
+        players[0].hand.length+
+        " cards";
+
+
+    players[0].hand.forEach(card=>{
+
+        const el =
+            document.createElement(
+                "div"
+            );
+
+
+        let cls="card";
+
+
+        if(card.joker){
+
+            cls+=" joker";
+
+        }
+        else if(card.red){
+
+            cls+=" red";
+
+        }
+
+
+        el.className=cls;
+
+
+        el.textContent =
+            cardText(card);
+
+
+        if(
+            game.phase==="playing" &&
+            game.currentPlayer===0
+        ){
+
+            const check =
+                legalMove(
+                    players[0],
+                    card
+                );
+
+
+            if(check.legal){
+
+                el.classList.add(
+                    "legal"
+                );
+
+
+                el.onclick=()=>{
+
+                    playerPlay(
+                        card.id
+                    );
+
+                };
+
+            }
+            else{
+
+                el.classList.add(
+                    "illegal"
+                );
+
+            }
+
+        }
+
+
+        area.appendChild(el);
+
+    });
+
+}
+
+
+/* =========================================================
+   REVEAL PANEL
+========================================================= */
+
+function renderRevealPanel(){
+
+    const panel =
+        document.getElementById(
+            "revealPanel"
+        );
+
+
+    const show =
+        (
+            game.phase==="playing" &&
+            game.currentPlayer===0 &&
+            shouldShowReveal(players[0]) &&
+            !game.revealDecision
+        );
+
+
+    panel.style.display =
+        show
+            ?"block"
+            :"none";
+
+
+    if(show){
+
+        document.getElementById(
+            "leadText"
+        ).textContent =
+            suitSymbol(
+                game.leadSuit
+            );
+
+    }
+
+}
+
+
+/* =========================================================
+   TRICK
+========================================================= */
+
+function renderTrick(){
+
+    const area =
+        document.getElementById(
+            "trick"
+        );
+
+
+    area.innerHTML="";
+
+
+    game.trick.forEach(item=>{
+
+        const el =
+            document.createElement(
+                "div"
+            );
+
+
+        let cls="played";
+
+
+        if(item.card.joker){
+
+            cls+=" joker";
+
+        }
+        else if(item.card.red){
+
+            cls+=" red";
+
+        }
+
+
+        el.className=cls;
+
+
+        el.textContent =
+            cardText(
+                item.card
+            );
+
+
+        area.appendChild(el);
+
+    });
+
+}
+
+
+/* =========================================================
+   AI CARDS
+========================================================= */
+
+function renderAICards(){
+
+    const area =
+        document.getElementById(
+            "aiCardsContent"
+        );
+
+
+    area.innerHTML="";
+
+
+    players
+        .filter(
+            p=>p.id!==0
+        )
+        .forEach(p=>{
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className="aiRow";
+
+
+            const cards =
+                p.hand
+                .map(c=>{
+
+                    let cls="";
+
+
+                    if(c.joker)
+                        cls="joker";
+
+                    else if(c.red)
+                        cls="red";
+
+
+                    return (
+                        "<span class='"+cls+"'>"+
+                        cardText(c)+
+                        "</span>"
+                    );
+
+                })
+                .join(" &nbsp; ");
+
+
+            row.innerHTML =
+                "<b>"+
+                p.name+
+                ":</b> "+
+                cards;
+
+
+            area.appendChild(row);
+
+        });
+
+}
+
+
+function toggleAICards(){
+
+    game.showAI =
+        !game.showAI;
+
+
+    document
+        .getElementById(
+            "aiCards"
+        )
+        .classList.toggle(
+            "show",
+            game.showAI
+        );
+
+
+    renderAICards();
+
+}
+
+
+/* =========================================================
+   MAIN RENDER
+========================================================= */
+
+function render(){
+
+    renderHand();
+
+    renderTrick();
+
+    renderRevealPanel();
+
+    renderAICards();
+
+
+    document.getElementById(
+        "bidder"
+    ).textContent =
+        game.bidder===null
+            ?"-"
+            :players[
+                game.bidder
+            ].name;
+
+
+    document.getElementById(
+        "bid"
+    ).textContent =
+        game.highestBid ||
+        "-";
+
+
+    document.getElementById(
+        "trump"
+    ).textContent =
+
+        game.trump===null
+
+            ?
+
+        "🔒 Hidden"
+
+            :
+
+        (
+            game.trumpHidden
+
+                ?
+
+            "🔒 Hidden"
+
+                :
+
+            "🔥 "+
+            suitSymbol(
+                game.trump
+            )
+        );
+
+
+    document.getElementById(
+        "tricks"
+    ).textContent =
+        game.completed+
+        " / 8";
+
+
+    document.getElementById(
+        "score13"
+    ).textContent =
+        savedScores["13"];
+
+
+    document.getElementById(
+        "score24"
+    ).textContent =
+        savedScores["24"];
+
+
+    document.getElementById(
+        "teamTricks13"
+    ).textContent =
+        teamTricks("13");
+
+
+    document.getElementById(
+        "teamTricks24"
+    ).textContent =
+        teamTricks("24");
+
+
+    document.getElementById(
+        "contract13"
+    ).textContent =
+        game.contractTeam==="13"
+            ?game.contractBid
+            :"-";
+
+
+    document.getElementById(
+        "contract24"
+    ).textContent =
+        game.contractTeam==="24"
+            ?game.contractBid
+            :"-";
+
+
+    const s13 =
+        teamTricks("13");
+
+
+    const s24 =
+        teamTricks("24");
+
+
+    document.getElementById(
+        "team13"
+    ).classList.toggle(
+        "active",
+        s13>s24
+    );
+
+
+    document.getElementById(
+        "team24"
+    ).classList.toggle(
+        "active",
+        s24>s13
+    );
+
+
+    for(
+        let i=0;
+        i<4;
+        i++
+    ){
+
+        document.getElementById(
+            "t"+(i+1)
+        ).textContent =
+            players[i].tricks;
+
+
+        document.getElementById(
+            "seat"+(i+1)
+        ).classList.toggle(
+            "activeSeat",
+            game.currentPlayer===i
+        );
+
+
+        const think =
+            document.getElementById(
+                "think"+(i+1)
+            );
+
+
+        if(think){
+
+            think.textContent =
+                game.thinking===i
+                    ?"🧠 सोच रहा है..."
+                    :"";
+
+        }
+
+    }
+
+
+    document.getElementById(
+        "bidPanel"
+    ).style.display =
+
+        (
+            game.phase==="bidding" &&
+            game.bidTurn===0
+        )
+
+        ?
+
+        "block"
+
+        :
+
+        "none";
+
+
+    document.getElementById(
+        "colorPanel"
+    ).style.display =
+
+        (
+            game.phase==="trump" &&
+            game.bidder===0
+        )
+
+        ?
+
+        "block"
+
+        :
+
+        "none";
+
+
+    const center =
+        document.getElementById(
+            "center"
+        );
+
+
+    if(
+        game.phase==="waiting"
+    ){
+
+        center.textContent =
+            "NEW GAME";
+
+    }
+    else if(
+        game.phase==="dealing"
+    ){
+
+        center.textContent =
+            "DEALING";
+
+    }
+    else if(
+        game.phase==="bidding"
+    ){
+
+        center.textContent =
+            "BIDDING";
+
+    }
+    else if(
+        game.phase==="trump"
+    ){
+
+        center.textContent =
+            "CHOOSE TRUMP";
+
+    }
+    else if(
+        game.phase==="playing"
+    ){
+
+        if(game.leadSuit){
+
+            center.textContent =
+                "Lead "+
+                suitSymbol(
+                    game.leadSuit
+                );
+
+        }
+        else{
+
+            center.textContent =
+                "🃏 TRICK";
+
+        }
+
+    }
+    else{
+
+        center.textContent =
+            "🏆 GAME";
+
+    }
+
+}
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+render();
+
+</script>
+
 </body>
 </html>
