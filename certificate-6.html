@@ -37,11 +37,8 @@
             height: 69px;
             width: 100%;
             min-width: 1200px;
-
             position: relative;
-
             background: #fff;
-
             border-bottom: 1px solid #777;
         }
 
@@ -51,10 +48,8 @@
 
         .logo-box {
             position: absolute;
-
             left: 3px;
             top: 1px;
-
             width: 58px;
             height: 66px;
 
@@ -66,7 +61,6 @@
         .logo-box img {
             width: 55px;
             height: 63px;
-
             object-fit: contain;
         }
 
@@ -76,10 +70,8 @@
 
         .title-box {
             position: absolute;
-
             left: 67px;
             top: 0;
-
             height: 68px;
 
             display: flex;
@@ -160,7 +152,6 @@
 
         .legal-links a {
             color: #000080;
-
             text-decoration: none;
         }
 
@@ -209,7 +200,6 @@
 
         .support-item a {
             color: #000080;
-
             text-decoration: none;
         }
 
@@ -217,17 +207,38 @@
             text-decoration: underline;
         }
 
+        /* =========================================
+           HEADER ICONS
+        ========================================= */
+
         .support-icon {
             width: 22px;
+            height: 22px;
 
             margin-right: 5px;
 
             display: inline-flex;
+
             align-items: center;
             justify-content: center;
 
-            font-family: Arial, sans-serif;
-            font-size: 18px;
+            overflow: hidden;
+        }
+
+        .support-icon img {
+            width: 19px;
+            height: 19px;
+
+            object-fit: contain;
+
+            display: block;
+        }
+
+        .login-icon img {
+            width: 20px;
+            height: 20px;
+
+            object-fit: contain;
         }
 
         /* =========================================
@@ -249,6 +260,9 @@
 
             border-top: 1px solid #236da6;
             border-bottom: 2px solid #236da6;
+
+            position: relative;
+            z-index: 1000;
         }
 
         .nav-wrapper {
@@ -260,17 +274,23 @@
             margin-left: 2px;
         }
 
+        /* =========================================
+           NAV ITEM
+        ========================================= */
+
         .nav-item-custom {
             height: 41px;
 
             border-right: 2px solid #397eb5;
+
+            position: relative;
         }
 
         .nav-item-custom:first-child {
             border-left: 2px solid #397eb5;
         }
 
-        .nav-item-custom a {
+        .nav-item-custom > a {
             height: 40px;
 
             display: flex;
@@ -292,7 +312,8 @@
             white-space: nowrap;
         }
 
-        .nav-item-custom a:hover {
+        .nav-item-custom:hover > a,
+        .nav-item-custom > a.active {
             background: linear-gradient(
                 to bottom,
                 #91cef1,
@@ -300,12 +321,93 @@
             );
         }
 
-        .nav-item-custom a.active {
+        /* =========================================
+           DROPDOWN
+        ========================================= */
+
+        .dropdown-menu-custom {
+            position: absolute;
+
+            top: 40px;
+            left: -2px;
+
+            min-width: 168px;
+
+            padding: 0;
+
+            margin: 0;
+
+            list-style: none;
+
+            background: linear-gradient(
+                to bottom,
+                #7fc2eb 0%,
+                #59a9df 100%
+            );
+
+            border: 1px solid #347db5;
+
+            box-shadow:
+                0 2px 5px rgba(0, 0, 0, 0.25);
+
+            display: none;
+
+            z-index: 9999;
+        }
+
+        /* Wider dropdowns for long names */
+
+        .dropdown-wide {
+            min-width: 300px;
+        }
+
+        .dropdown-extra-wide {
+            min-width: 360px;
+        }
+
+        .nav-item-custom:hover .dropdown-menu-custom {
+            display: block;
+        }
+
+        .dropdown-menu-custom li {
+            margin: 0;
+            padding: 0;
+        }
+
+        .dropdown-menu-custom a {
+            display: block;
+
+            width: 100%;
+
+            padding: 7px 18px;
+
+            color: #000;
+
+            text-decoration: none;
+
+            font-family: "Times New Roman", Times, serif;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+            border-bottom: 1px solid rgba(55, 126, 181, 0.65);
+        }
+
+        .dropdown-menu-custom li:last-child a {
+            border-bottom: none;
+        }
+
+        .dropdown-menu-custom a:hover {
             background: linear-gradient(
                 to bottom,
                 #91cef1,
                 #65afe0
             );
+
+            color: #000;
         }
 
         /* =========================================
@@ -324,11 +426,12 @@
 
         .certificate-wrapper {
             width: 91%;
+
             margin: 10px auto 10px;
 
             padding: 0 14px 10px;
 
-            min-height: 620px;
+            min-height: 0;
 
             box-shadow:
                 0 0 15px rgba(0, 77, 160, 0.25);
@@ -389,6 +492,42 @@
             font-size: 24px;
 
             font-weight: bold;
+        }
+
+        /* =========================================
+           TRAINEE COLLAPSE
+        ========================================= */
+
+        .trainee-toggle {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .trainee-content {
+            max-height: 1000px;
+            overflow: hidden;
+            opacity: 1;
+
+            transition:
+                max-height 0.5s ease,
+                opacity 0.5s ease;
+        }
+
+        .trainee-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .trainee-section-collapsed {
+            padding-bottom: 7px !important;
+
+            transition:
+                padding-bottom 0.5s ease;
+        }
+
+        .trainee-toggle:focus {
+            outline: 2px solid #144bb5;
+            outline-offset: -2px;
         }
 
         /* =========================================
@@ -541,10 +680,10 @@
 
             font-size: 16px;
         }
-        body {
-    zoom: 0.8;
-}
 
+        body {
+            zoom: 0.8;
+        }
 
         .trainee-table td {
             height: 46px;
@@ -627,25 +766,22 @@
 
 <body>
 
-
     <!-- =========================================
          HEADER
     ========================================= -->
 
     <header class="top-header">
 
-
-        <!-- ASHOKA LOGO -->
+        <!-- NCVT MIS LOGO -->
 
         <div class="logo-box">
 
             <img
-                src="asoka_logo.png"
-                alt="Government of India"
+                src="https://ncvtmis.gov.in/Images/img_logo.png"
+                alt="NCVT MIS"
             >
 
         </div>
-
 
         <!-- MINISTRY TITLE -->
 
@@ -655,14 +791,9 @@
                 Ministry of Skill Development And Entrepreneurship
             </h1>
 
-            <div class="xyz" style="width:10px;"></div>
-
         </div>
 
-
-        <!-- =====================================
-             FONT BUTTONS
-        ====================================== -->
+        <!-- FONT BUTTONS -->
 
         <div class="font-controls">
 
@@ -692,10 +823,7 @@
 
         </div>
 
-
-        <!-- =====================================
-             TERMS & CONDITIONS
-        ====================================== -->
+        <!-- TERMS & PRIVACY -->
 
         <div class="legal-links">
 
@@ -711,18 +839,21 @@
 
         </div>
 
-
-        <!-- =====================================
-             SUPPORT LINKS
-        ====================================== -->
+        <!-- SUPPORT / LOGIN / FAQ / HELP / SITEMAP -->
 
         <div class="support-row">
 
+            <!-- SUPPORT -->
 
             <div class="support-item">
 
                 <span class="support-icon">
-                    ✉
+
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/256/6125/6125113.png"
+                        alt="Support"
+                    >
+
                 </span>
 
                 <a href="#">
@@ -731,11 +862,17 @@
 
             </div>
 
+            <!-- LOGIN -->
 
             <div class="support-item">
 
-                <span class="support-icon">
-                    ↗
+                <span class="support-icon login-icon">
+
+                    <img
+                        src="https://scontent.fpnq7-10.fna.fbcdn.net/v/t39.30808-6/801885759_122276750336083079_2831736457634501422_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x2048&ctp=s2048x2048&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_ohc=xclcG5tASsUQ7kNvwFMRxJ4&_nc_oc=AdrgmJlGt2swyPL2UwoABwlxZClnNjlyUAQZdJ169VBEgLKaE_XKtV0Nkmtt7LP5UKBmIhshEGzUF0C-uyXfxTu7&_nc_zt=23&_nc_ht=scontent.fpnq7-10.fna&_nc_gid=0G-s2fABXG8PA0tkJuUj8g&_nc_ss=7b289&oh=00_AQI_Gdn5o8rRyuFweAOy-Q3hBH8KMobDUtdMFEv-HG-xbg&oe=6AA7851F"
+                        alt="Login"
+                    >
+
                 </span>
 
                 <a href="#">
@@ -744,11 +881,17 @@
 
             </div>
 
+            <!-- FAQ -->
 
             <div class="support-item">
 
                 <span class="support-icon">
-                    ?
+
+                    <img
+                        src="https://www.freeiconspng.com/uploads/blue-question-mark-icon-1.png"
+                        alt="FAQ"
+                    >
+
                 </span>
 
                 <a href="#">
@@ -757,11 +900,17 @@
 
             </div>
 
+            <!-- HELP -->
 
             <div class="support-item">
 
                 <span class="support-icon">
-                    ?
+
+                    <img
+                        src="https://www.freeiconspng.com/uploads/blue-question-mark-icon-1.png"
+                        alt="Help"
+                    >
+
                 </span>
 
                 <a href="#">
@@ -770,11 +919,17 @@
 
             </div>
 
+            <!-- SITEMAP -->
 
             <div class="support-item">
 
                 <span class="support-icon">
-                    ?
+
+                    <img
+                        src="https://www.freeiconspng.com/uploads/blue-question-mark-icon-1.png"
+                        alt="SiteMap"
+                    >
+
                 </span>
 
                 <a href="#">
@@ -783,11 +938,9 @@
 
             </div>
 
-
         </div>
 
     </header>
-
 
     <!-- =========================================
          NAVIGATION
@@ -797,6 +950,7 @@
 
         <div class="nav-wrapper">
 
+            <!-- HOME -->
 
             <div class="nav-item-custom">
 
@@ -809,6 +963,9 @@
 
             </div>
 
+            <!-- =================================
+                 ITI
+            ================================== -->
 
             <div class="nav-item-custom">
 
@@ -816,8 +973,33 @@
                     ITI
                 </a>
 
+                <ul class="dropdown-menu-custom">
+
+                    <li>
+                        <a href="#">
+                            ITI Search
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Grading
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Trade Statistics
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
 
+            <!-- =================================
+                 TRAINEE
+            ================================== -->
 
             <div class="nav-item-custom">
 
@@ -825,8 +1007,87 @@
                     Trainee
                 </a>
 
+                <ul class="dropdown-menu-custom dropdown-extra-wide">
+
+                    <li>
+                        <a href="#">
+                            Trainee Search
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Trainee Verification
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Trainee Verification Before HT
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Trainee Profile
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            NAC Legacy Certificate
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            COE Certificate Download
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Flexi Marksheet Certificate
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Flexi Semester Marksheet Certificate
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            DST Marksheet Before 2019
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            DST Certificate Before 2019
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            NCIC Legacy Certificate
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            NTC Legacy Certificate
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
 
+            <!-- =================================
+                 VERIFICATION
+            ================================== -->
 
             <div class="nav-item-custom">
 
@@ -834,8 +1095,33 @@
                     Verification
                 </a>
 
+                <ul class="dropdown-menu-custom dropdown-wide">
+
+                    <li>
+                        <a href="#">
+                            e-Certificate Verification
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Certified Trainee Search
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Marksheet Verification
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
 
+            <!-- =================================
+                 INSTRUCTOR
+            ================================== -->
 
             <div class="nav-item-custom">
 
@@ -843,8 +1129,21 @@
                     Instructor
                 </a>
 
+                <ul class="dropdown-menu-custom">
+
+                    <li>
+                        <a href="#">
+                            Instructor Search
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
 
+            <!-- =================================
+                 EXAMINER
+            ================================== -->
 
             <div class="nav-item-custom">
 
@@ -852,8 +1151,33 @@
                     Examiner
                 </a>
 
+                <ul class="dropdown-menu-custom dropdown-wide">
+
+                    <li>
+                        <a href="#">
+                            Examiner Registration
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Examiner Activation
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Examiner Login
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
 
+            <!-- =================================
+                 CALENDAR
+            ================================== -->
 
             <div class="nav-item-custom">
 
@@ -861,8 +1185,25 @@
                     Calendar
                 </a>
 
+                <ul class="dropdown-menu-custom dropdown-wide">
+
+                    <li>
+                        <a href="#">
+                            Academic Calender
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Examination Calendar
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
 
+            <!-- CFI -->
 
             <div class="nav-item-custom">
 
@@ -872,6 +1213,9 @@
 
             </div>
 
+            <!-- =================================
+                 HELP
+            ================================== -->
 
             <div class="nav-item-custom">
 
@@ -879,8 +1223,21 @@
                     Help
                 </a>
 
+                <ul class="dropdown-menu-custom">
+
+                    <li>
+                        <a href="#">
+                            User Manual
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
 
+            <!-- =================================
+                 DASHBOARD
+            ================================== -->
 
             <div class="nav-item-custom">
 
@@ -888,8 +1245,45 @@
                     Dashboard
                 </a>
 
+                <ul class="dropdown-menu-custom dropdown-extra-wide">
+
+                    <li>
+                        <a href="#">
+                            DGT Reporting Dashboard
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Admitted Trainee Dashboard
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Instructor Dashboard
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Annual Result Dashboard
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Semester Result Dashboard
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
 
+            <!-- =================================
+                 COMPLAINT TOOL
+            ================================== -->
 
             <div class="nav-item-custom">
 
@@ -897,13 +1291,33 @@
                     Complaint Tool
                 </a>
 
-            </div>
+                <ul class="dropdown-menu-custom dropdown-wide">
 
+                    <li>
+                        <a href="#">
+                            Complaint Tool
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Helpdesk
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Grievance
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
 
         </div>
 
     </nav>
-
 
     <!-- =========================================
          PAGE CONTENT
@@ -911,43 +1325,29 @@
 
     <main class="content">
 
-
         <div class="certificate-wrapper">
-
-
-            <!-- PAGE TITLE -->
 
             <h2 class="certificate-title">
                 e-Certificate Verification
             </h2>
 
-
-            <!-- =====================================
-                 ENTER CERTIFICATE NUMBER
-            ====================================== -->
+            <!-- ENTER CERTIFICATE NUMBER -->
 
             <div class="certificate-section">
-
 
                 <div class="certificate-section-title">
                     Enter e-Certificate Number
                 </div>
 
-
                 <div class="certificate-form">
 
-
                     <div class="certificate-form-row">
-
-
-                        <!-- Certificate Number -->
 
                         <div class="certificate-field">
 
                             <label>
                                 e-Certificate Number
                             </label>
-
 
                             <div>
 
@@ -960,7 +1360,6 @@
                                     inputmode="numeric"
                                 >
 
-
                                 <div class="number-help">
                                     (Only Numbers Allowed)
                                 </div>
@@ -969,15 +1368,11 @@
 
                         </div>
 
-
-                        <!-- Certificate Type -->
-
                         <div class="certificate-field">
 
                             <label>
                                 Certificate Type
                             </label>
-
 
                             <select
                                 id="certificateType"
@@ -1000,9 +1395,6 @@
 
                         </div>
 
-
-                        <!-- Go Button -->
-
                         <div class="go-button-area">
 
                             <button
@@ -1015,178 +1407,161 @@
 
                         </div>
 
-
                     </div>
 
                 </div>
 
             </div>
 
+            <!-- CERTIFIED TRAINEE INFORMATION -->
 
-            <!-- =====================================
-                 CERTIFIED TRAINEE INFORMATION
-            ====================================== -->
+            <div
+                class="certificate-section"
+                id="traineeInfoSection"
+            >
 
-            <div class="certificate-section">
-
-
-                <div class="certificate-section-title">
+                <div
+                    class="certificate-section-title trainee-toggle"
+                    id="traineeInfoToggle"
+                    role="button"
+                    tabindex="0"
+                    aria-expanded="true"
+                    aria-controls="traineeInfoContent"
+                >
                     Certified Trainee Information
                 </div>
 
+                <div
+                    class="trainee-content"
+                    id="traineeInfoContent"
+                >
 
-                <table class="trainee-table">
+                    <table class="trainee-table">
 
-                    <tbody>
+                        <tbody>
 
+                            <tr>
+                                <td class="trainee-label">
+                                    Trainee Name
+                                </td>
 
-                        <tr>
+                                <td>
+                                    MANOJ BARIK
+                                </td>
+                            </tr>
 
-                            <td class="trainee-label">
-                                Trainee Name
-                            </td>
+                            <tr>
+                                <td class="trainee-label">
+                                    Father Name
+                                </td>
 
-                            <td>
-                                MANOJ BARIK
-                            </td>
+                                <td>
+                                    DUSHASANA BARIK
+                                </td>
+                            </tr>
 
-                        </tr>
+                            <tr>
+                                <td class="trainee-label">
+                                    Institute
+                                </td>
 
+                                <td>
+                                    PR21000456-LAXMI NARAYAN INSTITUTE
+                                    OF ENGINEERING &amp; TECHNOLOGY (ITC)
+                                </td>
+                            </tr>
 
-                        <tr>
+                            <tr>
+                                <td class="trainee-label">
+                                    Institute Address
+                                </td>
 
-                            <td class="trainee-label">
-                                Father Name
-                            </td>
+                                <td>
+                                    AT-PANCHUPANDAV CHHACK PO-KUSUNPUR,
+                                    VIA-N.KOILI ,BLOCK-DERABISH KENDRAPARA,
+                                    ODISHA 754207
+                                </td>
+                            </tr>
 
-                            <td>
-                                DUSHASANA BARIK
-                            </td>
+                            <tr>
+                                <td class="trainee-label">
+                                    Trade
+                                </td>
 
-                        </tr>
+                                <td>
+                                    Fitter (NSQF)
+                                </td>
+                            </tr>
 
+                            <tr>
+                                <td class="trainee-label">
+                                    Training Duration
+                                </td>
 
-                        <tr>
+                                <td>
+                                    Aug-2021 To Jul-2023
+                                </td>
+                            </tr>
 
-                            <td class="trainee-label">
-                                Institute
-                            </td>
+                            <tr>
+                                <td class="trainee-label">
+                                    Certified
+                                </td>
 
-                            <td>
-                                PR21000456-LAXMI NARAYAN INSTITUTE
-                                OF ENGINEERING &amp; TECHNOLOGY (ITC)
-                            </td>
+                                <td>
+                                    Yes
+                                </td>
+                            </tr>
 
-                        </tr>
+                            <tr>
+                                <td class="trainee-label">
+                                    Certificate Issue Date
+                                </td>
 
+                                <td>
+                                    19-Aug-2023
+                                </td>
+                            </tr>
 
-                        <tr>
+                            <tr>
 
-                            <td class="trainee-label">
-                                Institute Address
-                            </td>
-
-                            <td>
-                                AT-PANCHUPANDAV CHHACK PO-KUSUNPUR,
-                                VIA-N.KOILI ,BLOCK-DERABISH KENDRAPARA,
-                                ODISHA 754207
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td class="trainee-label">
-                                Trade
-                            </td>
-
-                            <td>
-                                Fitter (NSQF)
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td class="trainee-label">
-                                Training Duration
-                            </td>
-
-                            <td>
-                                Aug-2021 To Jul-2023
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td class="trainee-label">
-                                Certified
-                            </td>
-
-                            <td>
-                                Yes
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td class="trainee-label">
-                                Certificate Issue Date
-                            </td>
-
-                            <td>
-                                19-Aug-2023
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td
-                                colspan="2"
-                                class="close-cell"
-                            >
-
-                                <button
-                                    type="button"
-                                    class="close-button"
-                                    onclick="closeCertificate()"
+                                <td
+                                    colspan="2"
+                                    class="close-cell"
                                 >
-                                    Close
-                                </button>
 
-                            </td>
+                                    <button
+                                        type="button"
+                                        class="close-button"
+                                        onclick="closeCertificate()"
+                                    >
+                                        Close
+                                    </button>
 
-                        </tr>
+                                </td>
 
+                            </tr>
 
-                    </tbody>
+                        </tbody>
 
-                </table>
+                    </table>
 
+                </div>
 
             </div>
 
-
         </div>
 
-
     </main>
-
 
     <!-- =========================================
          FOOTER
     ========================================= -->
 
-    <footer class="site-footer" style="margin-top: 140%;">
-
+    <footer
+        class="site-footer"
+        style="margin-top: 140%;"
+    >
 
         <div class="footer-first">
 
@@ -1195,14 +1570,12 @@
 
         </div>
 
-
         <div class="footer-second">
 
             <span>
                 Suggested browser Microsoft Edge,
                 Chrome or Safari only.
             </span>
-
 
             <span>
                 Total Hits : 5,776,779 |
@@ -1212,9 +1585,7 @@
 
         </div>
 
-
     </footer>
-
 
     <!-- =========================================
          JAVASCRIPT
@@ -1222,10 +1593,11 @@
 
     <script>
 
+        /* =====================================
+           FONT SIZE
+        ====================================== */
+
         let fontSize = 17;
-
-
-        /* +A */
 
         function increaseFont() {
 
@@ -1240,9 +1612,6 @@
 
         }
 
-
-        /* -A */
-
         function decreaseFont() {
 
             fontSize--;
@@ -1256,9 +1625,6 @@
 
         }
 
-
-        /* A */
-
         function resetFont() {
 
             fontSize = 17;
@@ -1268,16 +1634,14 @@
 
         }
 
-
         /* =====================================
-           ONLY NUMBERS ALLOWED
+           ONLY NUMBERS
         ====================================== */
 
         const certificateInput =
             document.getElementById(
                 "certificateNumber"
             );
-
 
         certificateInput.addEventListener(
             "input",
@@ -1291,7 +1655,6 @@
 
             }
         );
-
 
         /* =====================================
            GO BUTTON
@@ -1307,14 +1670,12 @@
                     .value
                     .trim();
 
-
             const type =
                 document
                     .getElementById(
                         "certificateType"
                     )
                     .value;
-
 
             if (number === "") {
 
@@ -1325,7 +1686,6 @@
                 return;
             }
 
-
             if (type === "") {
 
                 alert(
@@ -1335,7 +1695,6 @@
                 return;
             }
 
-
             alert(
                 "Certificate Number: " +
                 number
@@ -1343,6 +1702,66 @@
 
         }
 
+        /* =====================================
+           TRAINEE INFORMATION TOGGLE
+        ====================================== */
+
+        const traineeInfoToggle =
+            document.getElementById(
+                "traineeInfoToggle"
+            );
+
+        const traineeInfoContent =
+            document.getElementById(
+                "traineeInfoContent"
+            );
+
+        const traineeInfoSection =
+            document.getElementById(
+                "traineeInfoSection"
+            );
+
+        function toggleTraineeInformation() {
+
+            const isCollapsed =
+                traineeInfoContent.classList.toggle(
+                    "collapsed"
+                );
+
+            traineeInfoSection.classList.toggle(
+                "trainee-section-collapsed",
+                isCollapsed
+            );
+
+            traineeInfoToggle.setAttribute(
+                "aria-expanded",
+                String(!isCollapsed)
+            );
+
+        }
+
+        traineeInfoToggle.addEventListener(
+            "click",
+            toggleTraineeInformation
+        );
+
+        traineeInfoToggle.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Enter" ||
+                    event.key === " "
+                ) {
+
+                    event.preventDefault();
+
+                    toggleTraineeInformation();
+
+                }
+
+            }
+        );
 
         /* =====================================
            CLOSE BUTTON
@@ -1354,16 +1773,14 @@
 
         }
 
-
         /* =====================================
            ACTIVE NAVIGATION
         ====================================== */
 
         const navLinks =
             document.querySelectorAll(
-                ".nav-item-custom a"
+                ".nav-item-custom > a"
             );
-
 
         navLinks.forEach(function(link) {
 
@@ -1371,8 +1788,11 @@
                 "click",
                 function(event) {
 
-                    event.preventDefault();
-
+                    /*
+                     * Dropdown wale parent links ko
+                     * normal active navigation ki tarah
+                     * handle kiya ja raha hai.
+                     */
 
                     navLinks.forEach(
                         function(item) {
@@ -1383,7 +1803,6 @@
 
                         }
                     );
-
 
                     this.classList.add(
                         "active"
