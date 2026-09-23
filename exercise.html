@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Workout Tracker</title>
+    <title>Workout Tracker</title>
 
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
     <style>
         * {
@@ -18,18 +20,16 @@
             margin: 0;
             background: #f4f6f8;
             font-family: Arial, sans-serif;
-            color: #212529;
         }
 
-        .app-container {
+        .app {
             max-width: 600px;
-            margin: auto;
             min-height: 100vh;
-            background: white;
-            padding-bottom: 100px;
+            margin: auto;
+            background: #fff;
+            padding-bottom: 50px;
         }
 
-        /* Header */
         .header {
             background: #212529;
             color: white;
@@ -38,38 +38,31 @@
         }
 
         .header h1 {
-            font-size: 25px;
-            font-weight: 700;
-            margin-bottom: 5px;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
         }
 
         .header p {
-            margin: 0;
-            color: #ced4da;
+            margin: 5px 0 0;
+            color: #adb5bd;
             font-size: 14px;
         }
 
-        /* Progress */
-        .progress-section {
-            padding: 20px;
+        .progress-area {
+            padding: 20px 15px;
         }
 
         .progress {
-            height: 12px;
+            height: 11px;
             border-radius: 20px;
         }
 
-        .progress-bar {
-            transition: width 0.4s ease;
-        }
-
-        /* Workout Card */
         .workout-card {
             margin: 0 15px 15px;
-            padding: 18px;
-            border-radius: 18px;
+            padding: 17px;
             border: 2px solid #e9ecef;
-            background: white;
+            border-radius: 18px;
             transition: 0.25s;
         }
 
@@ -79,113 +72,111 @@
         }
 
         .day-number {
-            width: 45px;
-            height: 45px;
-            min-width: 45px;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            border-radius: 12px;
             background: #212529;
             color: white;
-            border-radius: 13px;
 
             display: flex;
             justify-content: center;
             align-items: center;
 
             font-weight: bold;
+            font-size: 17px;
         }
 
         .completed .day-number {
             background: #198754;
         }
 
-        .workout-title {
+        .title {
+            font-weight: bold;
             font-size: 17px;
-            font-weight: 700;
         }
 
-        .workout-description {
-            color: #6c757d;
-            font-size: 13px;
-            margin-top: 3px;
-        }
-
-        /* Custom checkbox */
-        .check-box {
-            width: 30px;
-            height: 30px;
-            min-width: 30px;
+        .check {
+            width: 31px;
+            height: 31px;
+            min-width: 31px;
 
             border: 2px solid #adb5bd;
             border-radius: 50%;
 
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
 
             cursor: pointer;
-            transition: 0.2s;
-            font-size: 18px;
             font-weight: bold;
+            font-size: 18px;
         }
 
-        .completed .check-box {
+        .completed .check {
             background: #198754;
             border-color: #198754;
             color: white;
         }
 
-        /* Exercise list */
-        .exercise-list {
-            margin-top: 14px;
-            padding-top: 12px;
+        .sets-area {
+            margin-top: 15px;
+            padding-top: 13px;
             border-top: 1px solid #eee;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .exercise-item {
+        .sets-label {
             font-size: 14px;
-            margin: 7px 0;
+            font-weight: 600;
         }
 
-        /* Buttons */
+        .rep-input {
+            width: 85px;
+            height: 42px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            outline: none;
+        }
+
+        .rep-input:focus {
+            border-color: #198754;
+        }
+
+        .saved-text {
+            font-size: 11px;
+            color: #198754;
+            text-align: right;
+            margin-top: 4px;
+            height: 14px;
+        }
+
         .reset-btn {
             border-radius: 12px;
-        }
-
-        .tip-box {
-            margin: 20px 15px;
-            background: #fff3cd;
-            border-radius: 15px;
-            padding: 15px;
-            font-size: 13px;
-        }
-
-        @media (max-width: 400px) {
-            .header h1 {
-                font-size: 22px;
-            }
-
-            .workout-card {
-                margin-left: 10px;
-                margin-right: 10px;
-            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="app-container">
+<div class="app">
 
-    <!-- Header -->
     <div class="header">
-        <h1>💪 My Workout Tracker</h1>
-        <p>Train • Progress • Repeat</p>
+        <h1>💪 Workout Tracker</h1>
+        <p>Progressive Overload Tracker</p>
     </div>
 
-    <!-- Progress -->
-    <div class="progress-section">
+
+    <div class="progress-area">
 
         <div class="d-flex justify-content-between mb-2">
-            <strong>Cycle Progress</strong>
+            <strong>Progress</strong>
             <span id="progressText">0 / 5</span>
         </div>
 
@@ -193,194 +184,251 @@
             <div
                 id="progressBar"
                 class="progress-bar bg-success"
-                style="width:0%">
+                style="width: 0%">
             </div>
         </div>
 
     </div>
 
+
     <!-- DAY 1 -->
-    <div class="workout-card" data-id="day1">
+
+    <div class="workout-card" data-day="day1">
 
         <div class="d-flex align-items-center gap-3">
 
             <div class="day-number">1</div>
 
             <div class="flex-grow-1">
-                <div class="workout-title">
-                    Chest
-                </div>
-
-                <div class="workout-description">
-                    Push-up focused workout
-                </div>
+                <div class="title">Chest / Push-up</div>
             </div>
 
-            <div class="check-box"
-                 onclick="toggleWorkout('day1')">
+            <div
+                class="check"
+                onclick="toggleComplete('day1')">
             </div>
 
         </div>
 
-        <div class="exercise-list">
-            <div class="exercise-item">• Normal Push-ups — 3 sets</div>
-            <div class="exercise-item">• Wide Push-ups — 3 sets</div>
-            <div class="exercise-item">• Decline Push-ups — 3 sets</div>
+
+        <div class="sets-area">
+
+            <div class="sets-label">
+                Reps
+            </div>
+
+            <div>
+                <input
+                    type="number"
+                    min="0"
+                    id="reps-day1"
+                    class="rep-input"
+                    onchange="saveReps('day1')"
+                    oninput="saveReps('day1')"
+                >
+
+                <div
+                    class="saved-text"
+                    id="saved-day1">
+                </div>
+            </div>
+
         </div>
 
     </div>
 
 
     <!-- DAY 2 -->
-    <div class="workout-card" data-id="day2">
+
+    <div class="workout-card" data-day="day2">
 
         <div class="d-flex align-items-center gap-3">
 
             <div class="day-number">2</div>
 
             <div class="flex-grow-1">
-                <div class="workout-title">
-                    Abs / Core
-                </div>
-
-                <div class="workout-description">
-                    Core strength
-                </div>
+                <div class="title">Abs / Core</div>
             </div>
 
-            <div class="check-box"
-                 onclick="toggleWorkout('day2')">
+            <div
+                class="check"
+                onclick="toggleComplete('day2')">
             </div>
 
         </div>
 
-        <div class="exercise-list">
-            <div class="exercise-item">• Crunches — 3 sets</div>
-            <div class="exercise-item">• Leg Raises — 3 sets</div>
-            <div class="exercise-item">• Plank — 3 sets</div>
+
+        <div class="sets-area">
+
+            <div class="sets-label">
+                Reps
+            </div>
+
+            <div>
+                <input
+                    type="number"
+                    min="0"
+                    id="reps-day2"
+                    class="rep-input"
+                    oninput="saveReps('day2')"
+                >
+
+                <div
+                    class="saved-text"
+                    id="saved-day2">
+                </div>
+            </div>
+
         </div>
 
     </div>
 
 
     <!-- DAY 3 -->
-    <div class="workout-card" data-id="day3">
+
+    <div class="workout-card" data-day="day3">
 
         <div class="d-flex align-items-center gap-3">
 
             <div class="day-number">3</div>
 
             <div class="flex-grow-1">
-                <div class="workout-title">
-                    Biceps + Triceps
-                </div>
-
-                <div class="workout-description">
-                    Arms workout
-                </div>
+                <div class="title">Biceps + Triceps</div>
             </div>
 
-            <div class="check-box"
-                 onclick="toggleWorkout('day3')">
+            <div
+                class="check"
+                onclick="toggleComplete('day3')">
             </div>
 
         </div>
 
-        <div class="exercise-list">
-            <div class="exercise-item">• Dumbbell Curl — 3 sets</div>
-            <div class="exercise-item">• Hammer Curl — 3 sets</div>
-            <div class="exercise-item">• Triceps Extension — 3 sets</div>
-            <div class="exercise-item">• Diamond Push-ups — 3 sets</div>
+
+        <div class="sets-area">
+
+            <div class="sets-label">
+                Reps
+            </div>
+
+            <div>
+                <input
+                    type="number"
+                    min="0"
+                    id="reps-day3"
+                    class="rep-input"
+                    oninput="saveReps('day3')"
+                >
+
+                <div
+                    class="saved-text"
+                    id="saved-day3">
+                </div>
+            </div>
+
         </div>
 
     </div>
 
 
     <!-- DAY 4 -->
-    <div class="workout-card" data-id="day4">
+
+    <div class="workout-card" data-day="day4">
 
         <div class="d-flex align-items-center gap-3">
 
             <div class="day-number">4</div>
 
             <div class="flex-grow-1">
-
-                <div class="workout-title">
-                    Shoulders + Back
-                </div>
-
-                <div class="workout-description">
-                    Upper-body balance
-                </div>
-
+                <div class="title">Shoulders + Back</div>
             </div>
 
-            <div class="check-box"
-                 onclick="toggleWorkout('day4')">
+            <div
+                class="check"
+                onclick="toggleComplete('day4')">
             </div>
 
         </div>
 
-        <div class="exercise-list">
-            <div class="exercise-item">• Shoulder Press — 3 sets</div>
-            <div class="exercise-item">• Lateral Raise — 3 sets</div>
-            <div class="exercise-item">• Dumbbell Row — 3 sets</div>
+
+        <div class="sets-area">
+
+            <div class="sets-label">
+                Reps
+            </div>
+
+            <div>
+                <input
+                    type="number"
+                    min="0"
+                    id="reps-day4"
+                    class="rep-input"
+                    oninput="saveReps('day4')"
+                >
+
+                <div
+                    class="saved-text"
+                    id="saved-day4">
+                </div>
+            </div>
+
         </div>
 
     </div>
 
 
     <!-- DAY 5 -->
-    <div class="workout-card" data-id="day5">
+
+    <div class="workout-card" data-day="day5">
 
         <div class="d-flex align-items-center gap-3">
 
             <div class="day-number">5</div>
 
             <div class="flex-grow-1">
-
-                <div class="workout-title">
-                    Legs
-                </div>
-
-                <div class="workout-description">
-                    Lower-body workout
-                </div>
-
+                <div class="title">Legs</div>
             </div>
 
-            <div class="check-box"
-                 onclick="toggleWorkout('day5')">
+            <div
+                class="check"
+                onclick="toggleComplete('day5')">
             </div>
 
         </div>
 
-        <div class="exercise-list">
-            <div class="exercise-item">• Squats — 3 sets</div>
-            <div class="exercise-item">• Lunges — 3 sets</div>
-            <div class="exercise-item">• Calf Raises — 3 sets</div>
+
+        <div class="sets-area">
+
+            <div class="sets-label">
+                Reps
+            </div>
+
+            <div>
+                <input
+                    type="number"
+                    min="0"
+                    id="reps-day5"
+                    class="rep-input"
+                    oninput="saveReps('day5')"
+                >
+
+                <div
+                    class="saved-text"
+                    id="saved-day5">
+                </div>
+            </div>
+
         </div>
 
     </div>
 
 
-    <div class="tip-box">
-        <strong>📈 Progressive Overload</strong><br>
-        Jab bhi same workout dobara karo, possible ho to
-        har set me <strong>1–2 reps increase</strong> karo.
-        Jab reps bahut easy ho jayein, exercise ki difficulty
-        ya weight badhao.
-    </div>
-
-
-    <!-- Reset -->
-    <div class="px-3">
+    <div class="px-3 mt-4">
 
         <button
-            onclick="resetProgress()"
-            class="btn btn-outline-danger w-100 reset-btn">
+            class="btn btn-outline-danger w-100 reset-btn"
+            onclick="resetProgress()">
 
-            Reset Workout Cycle
+            Reset All
 
         </button>
 
@@ -391,143 +439,241 @@
 
 <script>
 
-    const workoutDays = [
-        "day1",
-        "day2",
-        "day3",
-        "day4",
-        "day5"
-    ];
+const days = [
+    "day1",
+    "day2",
+    "day3",
+    "day4",
+    "day5"
+];
 
 
-    /*
-       Chrome Local Storage se
-       saved progress load karega
-    */
+/* ==============================
+   LOAD SAVED DATA
+================================ */
 
-    let completedWorkouts =
-        JSON.parse(
-            localStorage.getItem("workoutProgress")
-        ) || {};
-
-
-    function toggleWorkout(day) {
-
-        /*
-        Agar workout complete nahi hai
-        to complete karega.
-
-        Agar already complete hai
-        to uncheck karega.
-        */
-
-        completedWorkouts[day] =
-            !completedWorkouts[day];
+let workoutData =
+    JSON.parse(
+        localStorage.getItem("myWorkoutData")
+    ) || {};
 
 
-        saveProgress();
+/* ==============================
+   CREATE DEFAULT DATA
+================================ */
 
-        updateUI();
+days.forEach(day => {
+
+    if (!workoutData[day]) {
+
+        workoutData[day] = {
+            reps: 0,
+            completed: false
+        };
+
     }
 
+});
 
-    function saveProgress() {
 
-        localStorage.setItem(
-            "workoutProgress",
-            JSON.stringify(completedWorkouts)
+/* ==============================
+   SAVE ALL DATA
+================================ */
+
+function saveData() {
+
+    localStorage.setItem(
+        "myWorkoutData",
+        JSON.stringify(workoutData)
+    );
+
+}
+
+
+/* ==============================
+   SAVE REPS
+================================ */
+
+function saveReps(day) {
+
+    const input =
+        document.getElementById(
+            "reps-" + day
         );
 
+    let value =
+        parseInt(input.value);
+
+
+    if (isNaN(value)) {
+        value = 0;
     }
 
 
-    function updateUI() {
+    workoutData[day].reps = value;
 
-        let completedCount = 0;
-
-
-        workoutDays.forEach(function(day) {
-
-            const card =
-                document.querySelector(
-                    `[data-id="${day}"]`
-                );
-
-            const check =
-                card.querySelector(".check-box");
+    saveData();
 
 
-            if (completedWorkouts[day]) {
-
-                card.classList.add("completed");
-
-                check.innerHTML = "✓";
-
-                completedCount++;
-
-            } else {
-
-                card.classList.remove("completed");
-
-                check.innerHTML = "";
-
-            }
-
-        });
+    const saved =
+        document.getElementById(
+            "saved-" + day
+        );
 
 
-        /*
-           Progress calculation
-        */
-
-        const percentage =
-            (completedCount / workoutDays.length) * 100;
+    saved.innerText = "Saved ✓";
 
 
-        document.getElementById("progressText")
-            .innerText =
-            completedCount + " / " + workoutDays.length;
+    clearTimeout(
+        saved.hideTimer
+    );
 
 
-        document.getElementById("progressBar")
-            .style.width =
-            percentage + "%";
+    saved.hideTimer =
+        setTimeout(() => {
 
-    }
+            saved.innerText = "";
+
+        }, 1000);
+
+}
 
 
-    function resetProgress() {
+/* ==============================
+   COMPLETE / UNCOMPLETE
+================================ */
 
-        const confirmReset =
-            confirm(
-                "Kya aap workout progress reset karna chahte hain?"
+function toggleComplete(day) {
+
+    workoutData[day].completed =
+        !workoutData[day].completed;
+
+    saveData();
+
+    updateUI();
+
+}
+
+
+/* ==============================
+   UPDATE SCREEN
+================================ */
+
+function updateUI() {
+
+    let completed = 0;
+
+
+    days.forEach(day => {
+
+        const card =
+            document.querySelector(
+                `[data-day="${day}"]`
+            );
+
+        const check =
+            card.querySelector(".check");
+
+        const input =
+            document.getElementById(
+                "reps-" + day
             );
 
 
-        if (!confirmReset) {
-            return;
+        input.value =
+            workoutData[day].reps;
+
+
+        if (workoutData[day].completed) {
+
+            card.classList.add(
+                "completed"
+            );
+
+            check.innerHTML = "✓";
+
+            completed++;
+
         }
 
+        else {
 
-        completedWorkouts = {};
+            card.classList.remove(
+                "completed"
+            );
+
+            check.innerHTML = "";
+
+        }
+
+    });
 
 
-        localStorage.removeItem(
-            "workoutProgress"
+    document.getElementById(
+        "progressText"
+    ).innerText =
+        completed + " / " + days.length;
+
+
+    const percent =
+        (completed / days.length) * 100;
+
+
+    document.getElementById(
+        "progressBar"
+    ).style.width =
+        percent + "%";
+
+}
+
+
+/* ==============================
+   RESET
+================================ */
+
+function resetProgress() {
+
+    const ask =
+        confirm(
+            "Saara workout data reset karna hai?"
         );
 
 
-        updateUI();
-
+    if (!ask) {
+        return;
     }
 
 
-    /*
-       Page open hote hi
-       saved progress show karega
-    */
+    localStorage.removeItem(
+        "myWorkoutData"
+    );
+
+
+    workoutData = {};
+
+
+    days.forEach(day => {
+
+        workoutData[day] = {
+            reps: 0,
+            completed: false
+        };
+
+    });
+
+
+    saveData();
 
     updateUI();
+
+}
+
+
+/* ==============================
+   START
+================================ */
+
+updateUI();
 
 </script>
 
