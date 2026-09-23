@@ -3,45 +3,533 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="static/css/ofline.css">
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <div class="row mt-5">
-            <div class="col-md-5 mx-auto shadow p-4">
-                <form method="post">
-                    <div class="title">
-                        <h3>User register</h3>
-                    </div>
-                    <div class="form-group">
-                        <label for="input4">User name</label>
-                        <input type="Text" class="form-control" id="input4" aria-describedby="emailHelp" placeholder="User name">
-                    </div>
-                    <div class="form-group">
-                        <label for="input1">Email address</label>
-                        <input type="email" class="form-control" id="input1" aria-describedby="emailHelp" placeholder="Enter email">
-                    </div>
-                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-                      <div class="form-group">
-                        <label for="input2">Password</label>
-                        <input type="password" class="form-control" id="input2" placeholder="Password">
-                      </div>
-                      <div class="form-group">
-                        <label for="input3">conform Password</label>
-                        <input type="password" class="form-control" id="input3" placeholder="Password">
-                      </div>
 
-                      <button type="submit" class="btn btn-primary">Register</button>
-                      &nbsp;&nbsp;&nbsp;Already User?
-                      &nbsp;<a href="xyz">Log in</a>
-                </form>
-            </div>
-        </div>
+    <title>My Workout Tracker</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f6f8;
+            font-family: Arial, sans-serif;
+            color: #212529;
+        }
+
+        .app-container {
+            max-width: 600px;
+            margin: auto;
+            min-height: 100vh;
+            background: white;
+            padding-bottom: 100px;
+        }
+
+        /* Header */
+        .header {
+            background: #212529;
+            color: white;
+            padding: 25px 20px;
+            border-radius: 0 0 25px 25px;
+        }
+
+        .header h1 {
+            font-size: 25px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #ced4da;
+            font-size: 14px;
+        }
+
+        /* Progress */
+        .progress-section {
+            padding: 20px;
+        }
+
+        .progress {
+            height: 12px;
+            border-radius: 20px;
+        }
+
+        .progress-bar {
+            transition: width 0.4s ease;
+        }
+
+        /* Workout Card */
+        .workout-card {
+            margin: 0 15px 15px;
+            padding: 18px;
+            border-radius: 18px;
+            border: 2px solid #e9ecef;
+            background: white;
+            transition: 0.25s;
+        }
+
+        .workout-card.completed {
+            background: #e8f8ee;
+            border-color: #198754;
+        }
+
+        .day-number {
+            width: 45px;
+            height: 45px;
+            min-width: 45px;
+            background: #212529;
+            color: white;
+            border-radius: 13px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-weight: bold;
+        }
+
+        .completed .day-number {
+            background: #198754;
+        }
+
+        .workout-title {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .workout-description {
+            color: #6c757d;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        /* Custom checkbox */
+        .check-box {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+
+            border: 2px solid #adb5bd;
+            border-radius: 50%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .completed .check-box {
+            background: #198754;
+            border-color: #198754;
+            color: white;
+        }
+
+        /* Exercise list */
+        .exercise-list {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        .exercise-item {
+            font-size: 14px;
+            margin: 7px 0;
+        }
+
+        /* Buttons */
+        .reset-btn {
+            border-radius: 12px;
+        }
+
+        .tip-box {
+            margin: 20px 15px;
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 400px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .workout-card {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>💪 My Workout Tracker</h1>
+        <p>Train • Progress • Repeat</p>
     </div>
 
-    <script stc="static/js/bootstrap.min.js"></script>
-    <script src="static/js/popper.js"></script>
+    <!-- Progress -->
+    <div class="progress-section">
+
+        <div class="d-flex justify-content-between mb-2">
+            <strong>Cycle Progress</strong>
+            <span id="progressText">0 / 5</span>
+        </div>
+
+        <div class="progress">
+            <div
+                id="progressBar"
+                class="progress-bar bg-success"
+                style="width:0%">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="workout-card" data-id="day1">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="day-number">1</div>
+
+            <div class="flex-grow-1">
+                <div class="workout-title">
+                    Chest
+                </div>
+
+                <div class="workout-description">
+                    Push-up focused workout
+                </div>
+            </div>
+
+            <div class="check-box"
+                 onclick="toggleWorkout('day1')">
+            </div>
+
+        </div>
+
+        <div class="exercise-list">
+            <div class="exercise-item">• Normal Push-ups — 3 sets</div>
+            <div class="exercise-item">• Wide Push-ups — 3 sets</div>
+            <div class="exercise-item">• Decline Push-ups — 3 sets</div>
+        </div>
+
+    </div>
+
+
+    <!-- DAY 2 -->
+    <div class="workout-card" data-id="day2">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="day-number">2</div>
+
+            <div class="flex-grow-1">
+                <div class="workout-title">
+                    Abs / Core
+                </div>
+
+                <div class="workout-description">
+                    Core strength
+                </div>
+            </div>
+
+            <div class="check-box"
+                 onclick="toggleWorkout('day2')">
+            </div>
+
+        </div>
+
+        <div class="exercise-list">
+            <div class="exercise-item">• Crunches — 3 sets</div>
+            <div class="exercise-item">• Leg Raises — 3 sets</div>
+            <div class="exercise-item">• Plank — 3 sets</div>
+        </div>
+
+    </div>
+
+
+    <!-- DAY 3 -->
+    <div class="workout-card" data-id="day3">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="day-number">3</div>
+
+            <div class="flex-grow-1">
+                <div class="workout-title">
+                    Biceps + Triceps
+                </div>
+
+                <div class="workout-description">
+                    Arms workout
+                </div>
+            </div>
+
+            <div class="check-box"
+                 onclick="toggleWorkout('day3')">
+            </div>
+
+        </div>
+
+        <div class="exercise-list">
+            <div class="exercise-item">• Dumbbell Curl — 3 sets</div>
+            <div class="exercise-item">• Hammer Curl — 3 sets</div>
+            <div class="exercise-item">• Triceps Extension — 3 sets</div>
+            <div class="exercise-item">• Diamond Push-ups — 3 sets</div>
+        </div>
+
+    </div>
+
+
+    <!-- DAY 4 -->
+    <div class="workout-card" data-id="day4">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="day-number">4</div>
+
+            <div class="flex-grow-1">
+
+                <div class="workout-title">
+                    Shoulders + Back
+                </div>
+
+                <div class="workout-description">
+                    Upper-body balance
+                </div>
+
+            </div>
+
+            <div class="check-box"
+                 onclick="toggleWorkout('day4')">
+            </div>
+
+        </div>
+
+        <div class="exercise-list">
+            <div class="exercise-item">• Shoulder Press — 3 sets</div>
+            <div class="exercise-item">• Lateral Raise — 3 sets</div>
+            <div class="exercise-item">• Dumbbell Row — 3 sets</div>
+        </div>
+
+    </div>
+
+
+    <!-- DAY 5 -->
+    <div class="workout-card" data-id="day5">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="day-number">5</div>
+
+            <div class="flex-grow-1">
+
+                <div class="workout-title">
+                    Legs
+                </div>
+
+                <div class="workout-description">
+                    Lower-body workout
+                </div>
+
+            </div>
+
+            <div class="check-box"
+                 onclick="toggleWorkout('day5')">
+            </div>
+
+        </div>
+
+        <div class="exercise-list">
+            <div class="exercise-item">• Squats — 3 sets</div>
+            <div class="exercise-item">• Lunges — 3 sets</div>
+            <div class="exercise-item">• Calf Raises — 3 sets</div>
+        </div>
+
+    </div>
+
+
+    <div class="tip-box">
+        <strong>📈 Progressive Overload</strong><br>
+        Jab bhi same workout dobara karo, possible ho to
+        har set me <strong>1–2 reps increase</strong> karo.
+        Jab reps bahut easy ho jayein, exercise ki difficulty
+        ya weight badhao.
+    </div>
+
+
+    <!-- Reset -->
+    <div class="px-3">
+
+        <button
+            onclick="resetProgress()"
+            class="btn btn-outline-danger w-100 reset-btn">
+
+            Reset Workout Cycle
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const workoutDays = [
+        "day1",
+        "day2",
+        "day3",
+        "day4",
+        "day5"
+    ];
+
+
+    /*
+       Chrome Local Storage se
+       saved progress load karega
+    */
+
+    let completedWorkouts =
+        JSON.parse(
+            localStorage.getItem("workoutProgress")
+        ) || {};
+
+
+    function toggleWorkout(day) {
+
+        /*
+        Agar workout complete nahi hai
+        to complete karega.
+
+        Agar already complete hai
+        to uncheck karega.
+        */
+
+        completedWorkouts[day] =
+            !completedWorkouts[day];
+
+
+        saveProgress();
+
+        updateUI();
+    }
+
+
+    function saveProgress() {
+
+        localStorage.setItem(
+            "workoutProgress",
+            JSON.stringify(completedWorkouts)
+        );
+
+    }
+
+
+    function updateUI() {
+
+        let completedCount = 0;
+
+
+        workoutDays.forEach(function(day) {
+
+            const card =
+                document.querySelector(
+                    `[data-id="${day}"]`
+                );
+
+            const check =
+                card.querySelector(".check-box");
+
+
+            if (completedWorkouts[day]) {
+
+                card.classList.add("completed");
+
+                check.innerHTML = "✓";
+
+                completedCount++;
+
+            } else {
+
+                card.classList.remove("completed");
+
+                check.innerHTML = "";
+
+            }
+
+        });
+
+
+        /*
+           Progress calculation
+        */
+
+        const percentage =
+            (completedCount / workoutDays.length) * 100;
+
+
+        document.getElementById("progressText")
+            .innerText =
+            completedCount + " / " + workoutDays.length;
+
+
+        document.getElementById("progressBar")
+            .style.width =
+            percentage + "%";
+
+    }
+
+
+    function resetProgress() {
+
+        const confirmReset =
+            confirm(
+                "Kya aap workout progress reset karna chahte hain?"
+            );
+
+
+        if (!confirmReset) {
+            return;
+        }
+
+
+        completedWorkouts = {};
+
+
+        localStorage.removeItem(
+            "workoutProgress"
+        );
+
+
+        updateUI();
+
+    }
+
+
+    /*
+       Page open hote hi
+       saved progress show karega
+    */
+
+    updateUI();
+
+</script>
+
 </body>
 </html>
