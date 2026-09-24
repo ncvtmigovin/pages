@@ -65,7 +65,7 @@
             transition: width 0.4s ease;
         }
 
-        /* WORKOUT CARD */
+        /* CARD */
         .workout-card {
             margin: 0 15px 15px;
             padding: 17px;
@@ -104,7 +104,6 @@
             background: #198754;
         }
 
-        /* TITLE */
         .title {
             font-weight: bold;
             font-size: 17px;
@@ -112,19 +111,18 @@
 
         /* CHECK BUTTON */
         .check {
-            width: 31px;
-            height: 31px;
-            min-width: 31px;
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
 
             border: 2px solid #adb5bd;
             border-radius: 50%;
 
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
 
             cursor: pointer;
-
             font-weight: bold;
             font-size: 18px;
 
@@ -138,7 +136,7 @@
             color: white;
         }
 
-        /* REPS AREA */
+        /* REPS */
         .reps-area {
             margin-top: 15px;
             padding-top: 13px;
@@ -164,8 +162,8 @@
             font-size: 18px;
             font-weight: bold;
 
-            border-radius: 10px;
             border: 2px solid #dee2e6;
+            border-radius: 10px;
 
             outline: none;
         }
@@ -179,19 +177,17 @@
             margin-top: 3px;
 
             text-align: center;
-
             font-size: 11px;
             color: #198754;
         }
 
         /* RESET */
         .reset-btn {
-            border-radius: 12px;
             height: 46px;
+            border-radius: 12px;
             font-weight: 600;
         }
 
-        /* MOBILE */
         @media (max-width: 400px) {
 
             .header h1 {
@@ -206,7 +202,6 @@
             .title {
                 font-size: 16px;
             }
-
         }
     </style>
 </head>
@@ -216,6 +211,7 @@
 <div class="app">
 
     <!-- HEADER -->
+
     <div class="header">
 
         <h1>💪 Workout Tracker</h1>
@@ -228,6 +224,7 @@
 
 
     <!-- PROGRESS -->
+
     <div class="progress-area">
 
         <div class="d-flex justify-content-between mb-2">
@@ -235,7 +232,7 @@
             <strong>Progress</strong>
 
             <span id="progressText">
-                0 / 5
+                0 / 4
             </span>
 
         </div>
@@ -254,7 +251,9 @@
     </div>
 
 
-    <!-- ================= DAY 1 ================= -->
+    <!-- ============================= -->
+    <!-- DAY 1 - CHEST -->
+    <!-- ============================= -->
 
     <div
         class="workout-card"
@@ -267,6 +266,7 @@
                 1
             </div>
 
+
             <div class="flex-grow-1">
 
                 <div class="title">
@@ -274,6 +274,7 @@
                 </div>
 
             </div>
+
 
             <div
                 class="check"
@@ -289,6 +290,7 @@
                 Reps
             </div>
 
+
             <div>
 
                 <input
@@ -298,6 +300,7 @@
                     class="rep-input"
                     oninput="saveReps('day1')"
                 >
+
 
                 <div
                     class="saved-text"
@@ -311,7 +314,9 @@
     </div>
 
 
-    <!-- ================= DAY 2 ================= -->
+    <!-- ============================= -->
+    <!-- DAY 2 - ARMS -->
+    <!-- ============================= -->
 
     <div
         class="workout-card"
@@ -324,13 +329,15 @@
                 2
             </div>
 
+
             <div class="flex-grow-1">
 
                 <div class="title">
-                    Abs / Core
+                    Biceps + Triceps
                 </div>
 
             </div>
+
 
             <div
                 class="check"
@@ -346,6 +353,7 @@
                 Reps
             </div>
 
+
             <div>
 
                 <input
@@ -355,6 +363,7 @@
                     class="rep-input"
                     oninput="saveReps('day2')"
                 >
+
 
                 <div
                     class="saved-text"
@@ -368,7 +377,9 @@
     </div>
 
 
-    <!-- ================= DAY 3 ================= -->
+    <!-- ============================= -->
+    <!-- DAY 3 - SHOULDER + BACK -->
+    <!-- ============================= -->
 
     <div
         class="workout-card"
@@ -381,13 +392,15 @@
                 3
             </div>
 
+
             <div class="flex-grow-1">
 
                 <div class="title">
-                    Biceps + Triceps
+                    Shoulders + Back
                 </div>
 
             </div>
+
 
             <div
                 class="check"
@@ -403,6 +416,7 @@
                 Reps
             </div>
 
+
             <div>
 
                 <input
@@ -412,6 +426,7 @@
                     class="rep-input"
                     oninput="saveReps('day3')"
                 >
+
 
                 <div
                     class="saved-text"
@@ -425,7 +440,9 @@
     </div>
 
 
-    <!-- ================= DAY 4 ================= -->
+    <!-- ============================= -->
+    <!-- DAY 4 - LEGS -->
+    <!-- ============================= -->
 
     <div
         class="workout-card"
@@ -438,13 +455,15 @@
                 4
             </div>
 
+
             <div class="flex-grow-1">
 
                 <div class="title">
-                    Shoulders + Back
+                    Legs
                 </div>
 
             </div>
+
 
             <div
                 class="check"
@@ -460,6 +479,7 @@
                 Reps
             </div>
 
+
             <div>
 
                 <input
@@ -469,6 +489,7 @@
                     class="rep-input"
                     oninput="saveReps('day4')"
                 >
+
 
                 <div
                     class="saved-text"
@@ -482,64 +503,8 @@
     </div>
 
 
-    <!-- ================= DAY 5 ================= -->
+    <!-- RESET -->
 
-    <div
-        class="workout-card"
-        data-day="day5"
-    >
-
-        <div class="d-flex align-items-center gap-3">
-
-            <div class="day-number">
-                5
-            </div>
-
-            <div class="flex-grow-1">
-
-                <div class="title">
-                    Legs
-                </div>
-
-            </div>
-
-            <div
-                class="check"
-                onclick="toggleComplete('day5')">
-            </div>
-
-        </div>
-
-
-        <div class="reps-area">
-
-            <div class="reps-label">
-                Reps
-            </div>
-
-            <div>
-
-                <input
-                    type="number"
-                    min="0"
-                    id="reps-day5"
-                    class="rep-input"
-                    oninput="saveReps('day5')"
-                >
-
-                <div
-                    class="saved-text"
-                    id="saved-day5">
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- RESET BUTTON -->
     <div class="px-3 mt-4">
 
         <button
@@ -556,32 +521,31 @@
 
 <script>
 
-    /* ========================================
-       ALL DAYS
-    ======================================== */
+    /* ============================
+       WORKOUT DAYS
+    ============================ */
 
     const days = [
         "day1",
         "day2",
         "day3",
-        "day4",
-        "day5"
+        "day4"
     ];
 
 
-    /* ========================================
-       LOAD DATA FROM LOCAL STORAGE
-    ======================================== */
+    /* ============================
+       LOAD LOCAL STORAGE
+    ============================ */
 
     let workoutData =
         JSON.parse(
-            localStorage.getItem("myWorkoutData")
+            localStorage.getItem("myWorkoutDataV2")
         ) || {};
 
 
-    /* ========================================
-       CREATE DEFAULT DATA
-    ======================================== */
+    /* ============================
+       DEFAULT DATA
+    ============================ */
 
     days.forEach(day => {
 
@@ -597,23 +561,23 @@
     });
 
 
-    /* ========================================
+    /* ============================
        SAVE DATA
-    ======================================== */
+    ============================ */
 
     function saveData() {
 
         localStorage.setItem(
-            "myWorkoutData",
+            "myWorkoutDataV2",
             JSON.stringify(workoutData)
         );
 
     }
 
 
-    /* ========================================
+    /* ============================
        SAVE REPS
-    ======================================== */
+    ============================ */
 
     function saveReps(day) {
 
@@ -632,43 +596,43 @@
         }
 
 
-        /* SAVE NEW REPS */
+        workoutData[day].reps =
+            value;
 
-        workoutData[day].reps = value;
 
         saveData();
 
 
-        /* SHOW SAVED */
+        /* SAVED MESSAGE */
 
-        const savedText =
+        const saved =
             document.getElementById(
                 "saved-" + day
             );
 
 
-        savedText.innerText =
+        saved.innerText =
             "Saved ✓";
 
 
         clearTimeout(
-            savedText.timer
+            saved.timer
         );
 
 
-        savedText.timer =
+        saved.timer =
             setTimeout(() => {
 
-                savedText.innerText = "";
+                saved.innerText = "";
 
             }, 1000);
 
     }
 
 
-    /* ========================================
-       COMPLETE / UNCOMPLETE
-    ======================================== */
+    /* ============================
+       CHECK / UNCHECK
+    ============================ */
 
     function toggleComplete(day) {
 
@@ -683,9 +647,9 @@
     }
 
 
-    /* ========================================
-       UPDATE SCREEN
-    ======================================== */
+    /* ============================
+       UPDATE UI
+    ============================ */
 
     function updateUI() {
 
@@ -718,7 +682,7 @@
                 workoutData[day].reps;
 
 
-            /* CHECK COMPLETED */
+            /* COMPLETED */
 
             if (
                 workoutData[day].completed
@@ -752,9 +716,7 @@
         });
 
 
-        /* ==================================
-           UPDATE PROGRESS NUMBER
-        ================================== */
+        /* PROGRESS TEXT */
 
         document.getElementById(
             "progressText"
@@ -764,9 +726,7 @@
             days.length;
 
 
-        /* ==================================
-           UPDATE PROGRESS BAR
-        ================================== */
+        /* PROGRESS BAR */
 
         const percentage =
             (
@@ -783,18 +743,17 @@
     }
 
 
-    /* ========================================
+    /* ============================
        RESET PROGRESS
 
-       IMPORTANT:
-       REPS DELETE NAHI HONGE
-    ======================================== */
+       REPS WILL NOT RESET
+    ============================ */
 
     function resetProgress() {
 
         const ask =
             confirm(
-                "Completed workout reset karna hai? Reps numbers save rahenge."
+                "Workout progress reset karna hai? Saved reps delete nahi honge."
             );
 
 
@@ -803,7 +762,7 @@
         }
 
 
-        /* ONLY REMOVE TICKS */
+        /* ONLY RESET TICKS */
 
         days.forEach(day => {
 
@@ -813,21 +772,16 @@
         });
 
 
-        /* SAVE AGAIN */
-
         saveData();
-
-
-        /* UPDATE SCREEN */
 
         updateUI();
 
     }
 
 
-    /* ========================================
-       START APP
-    ======================================== */
+    /* ============================
+       START
+    ============================ */
 
     updateUI();
 
